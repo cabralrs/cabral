@@ -22,59 +22,43 @@
             min-height: 100vh;
             padding: 20px;
             overflow: hidden;
-            position: relative;
         }
 
-        /* Efeito de Sangue Orgânico e Líquido */
+        /* Efeito de Sangue Orgânico e Fluido */
         #blood-screen {
             position: fixed;
             top: 0;
             left: 0;
             width: 100vw;
             height: 100vh;
-            background: rgba(40, 0, 0, 0.95);
+            background: linear-gradient(180deg, #590000 0%, #800000 40%, #300000 100%);
             z-index: 9999;
             pointer-events: none;
             opacity: 0;
             transform: translateY(-100%);
+            border-bottom-left-radius: 50% 20px;
+            border-bottom-right-radius: 50% 20px;
             transition: opacity 0.4s ease;
-            overflow: hidden;
         }
 
         #blood-screen.dripping {
-            animation: liquidDrop 2s ease forwards;
+            animation: organicBlood 1.8s cubic-bezier(0.25, 1, 0.5, 1) forwards;
         }
 
-        @keyframes liquidDrop {
-            0% { transform: translateY(-100%); opacity: 1; }
-            60% { transform: translateY(0%); opacity: 1; }
-            85% { transform: translateY(0%); opacity: 1; }
+        @keyframes organicBlood {
+            0% { transform: translateY(-100%); opacity: 1; border-radius: 0 0 100px 100px; }
+            50% { transform: translateY(0%); opacity: 1; border-radius: 0 0 40px 40px; }
+            85% { transform: translateY(0%); opacity: 1; border-radius: 0 0 10px 10px; }
             100% { transform: translateY(0%); opacity: 0; }
         }
 
-        .blood-stream {
-            position: absolute;
-            top: 0;
-            background: linear-gradient(180deg, #800000 0%, #ff0000 50%, #400000 100%);
-            border-radius: 0 0 20px 20px;
-            box-shadow: 0 0 15px #ff0000;
-            animation: flowDown 1.8s ease-in-out infinite;
-        }
-
-        @keyframes flowDown {
-            0% { height: 0%; }
-            50% { height: 100%; }
-            100% { height: 100%; }
-        }
-
-        /* Tela Inicial / Polaroid com Estilhaçamento Real e Quique */
+        /* Tela Inicial / Polaroid */
         #splash-screen {
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             gap: 15px;
-            transition: opacity 0.3s ease;
             position: relative;
             z-index: 10;
         }
@@ -149,34 +133,14 @@
             display: block;
         }
 
-        /* Cacos de Vidro Quicando */
+        /* Cacos de Vidro Dinâmicos com Física de Quique */
         .glass-shard {
             position: absolute;
+            background-image: url('avatar.jpg');
             background-size: 240px 250px;
             pointer-events: none;
             z-index: 50;
             box-shadow: inset 0 0 5px rgba(255,255,255,0.6);
-            border: 1px solid rgba(255,255,255,0.3);
-        }
-
-        /* Painel de Upload Local (Fim dos links quebrados!) */
-        .upload-panel {
-            background: #421a1a;
-            border: 1px solid #6b2d2d;
-            padding: 6px;
-            font-size: 9.5px;
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-            margin-top: 6px;
-        }
-
-        .upload-panel input[type="file"] {
-            font-size: 9px;
-            color: #ffb3b3;
-            background: #2b0505;
-            border: 1px solid #1a0202;
-            padding: 2px;
         }
 
         /* Seletor de Idioma */
@@ -343,7 +307,6 @@
             font-weight: bold;
         }
 
-        /* Sub-botões com Imagens */
         .submenu-buttons {
             display: flex;
             flex-direction: column;
@@ -377,7 +340,6 @@
             border: 1px solid #2b0505;
         }
 
-        /* Sub-janela Modal Estilo Winamp */
         #sub-modal {
             display: none;
             position: absolute;
@@ -462,7 +424,6 @@
             border-color: #803333;
         }
 
-        /* Mini imagens da direita */
         .mini-imgs {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -534,7 +495,6 @@
             border-color: #2b0505 #803333 #803333 #2b0505;
         }
 
-        /* Necro-Altar.exe */
         #secret-altar-modal {
             display: none;
             position: absolute;
@@ -590,19 +550,10 @@
 </head>
 <body>
 
-    <!-- Efeito de Sangue Líquido Orgânico -->
-    <div id="blood-screen">
-        <!-- Correntes de sangue orgânicas geradas dinamicamente -->
-        <div class="blood-stream" style="left: 5%; width: 35px; animation-delay: 0.1s;"></div>
-        <div class="blood-stream" style="left: 18%; width: 50px; animation-delay: 0.3s;"></div>
-        <div class="blood-stream" style="left: 32%; width: 25px; animation-delay: 0.0s;"></div>
-        <div class="blood-stream" style="left: 45%; width: 60px; animation-delay: 0.2s;"></div>
-        <div class="blood-stream" style="left: 60%; width: 40px; animation-delay: 0.4s;"></div>
-        <div class="blood-stream" style="left: 75%; width: 55px; animation-delay: 0.1s;"></div>
-        <div class="blood-stream" style="left: 88%; width: 30px; animation-delay: 0.3s;"></div>
-    </div>
+    <!-- Efeito de Sangue Fluido Orgânico -->
+    <div id="blood-screen"></div>
 
-    <!-- TELA INICIAL: Polaroid com Estilhaçamento de Vidro e Quique -->
+    <!-- TELA INICIAL: Polaroid -->
     <div id="splash-screen">
         <div class="lang-switch">
             <button class="lang-btn active" onmouseenter="playHoverSound()" onclick="setLanguage('pt')">PT</button>
@@ -612,15 +563,9 @@
         <div class="polaroid-container" onclick="shatterGlassAndOpen(event)">
             <div class="crosshair"></div>
             <div class="polaroid" id="main-polaroid" onmouseenter="playHoverSound()">
-                <img id="polaroid-img-tag" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=500&auto=format&fit=crop&q=60" alt="Polaroid Avatar">
+                <img src="avatar.jpg" alt="Polaroid Avatar">
                 <div class="polaroid-caption" id="polaroid-text">clique em mim para me conhecer melhor.</div>
             </div>
-        </div>
-
-        <!-- Painel de Upload Infalível para o Avatar Inicial -->
-        <div class="upload-panel">
-            <span id="upload-label-txt">🖼️ Enviar Foto Polaroid (Local):</span>
-            <input type="file" accept="image/*" onchange="loadLocalImage(event, 'polaroid-img-tag')">
         </div>
     </div>
 
@@ -644,11 +589,7 @@
             <!-- Coluna 1 -->
             <div class="panel">
                 <div class="avatar-box">
-                    <img id="avatar-img-tag" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=500&auto=format&fit=crop&q=60" alt="Avatar">
-                </div>
-                <div class="upload-panel">
-                    <span id="upload-avatar-txt">Trocar Avatar:</span>
-                    <input type="file" accept="image/*" onchange="loadLocalImage(event, 'avatar-img-tag')">
+                    <img src="avatar.jpg" alt="Avatar">
                 </div>
                 <div class="accordion-header" style="cursor:default;" id="profile-title">My Profile</div>
                 <table class="profile-table">
@@ -669,25 +610,20 @@
                     <span class="text-pt">sou um <span class="highlight-red">fruto ilusório da sua imaginação</span>. mesmo me alimentando de <span class="highlight-red">carne humana</span>, sou gentil. ☣︎</span>
                     <span class="text-en" style="display:none;">i'm an <span class="highlight-red">illusory fruit of your imagination</span>. even feeding on <span class="highlight-red">human flesh</span>, i'm kind. ☣︎</span>
                     
-                    <!-- 3 Novos Botões -->
+                    <!-- Botões com caminhos locais fixos -->
                     <div class="submenu-buttons">
                         <button class="sub-btn" onmouseenter="playHoverSound()" onclick="playClickSound(); openSubModal('jogos')">
-                            <img id="btn-img-1" src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=100&auto=format&fit=crop&q=60" alt="Jogos">
+                            <img src="jogos.jpg" alt="Jogos">
                             <span id="btn-jogos-txt">Jogos</span>
                         </button>
-                        <input type="file" accept="image/*" style="font-size:8px; background:#2b0505; color:#ffb3b3;" onchange="loadLocalImage(event, 'btn-img-1')">
-
                         <button class="sub-btn" onmouseenter="playHoverSound()" onclick="playClickSound(); openSubModal('midia')">
-                            <img id="btn-img-2" src="https://images.unsplash.com/photo-1579783902614-a3fb3927b675?w=100&auto=format&fit=crop&q=60" alt="Mídia Visual">
+                            <img src="midia.jpg" alt="Mídia Visual">
                             <span id="btn-midia-txt">Mídia Visual</span>
                         </button>
-                        <input type="file" accept="image/*" style="font-size:8px; background:#2b0505; color:#ffb3b3;" onchange="loadLocalImage(event, 'btn-img-2')">
-
                         <button class="sub-btn" onmouseenter="playHoverSound()" onclick="playClickSound(); openSubModal('musica')">
-                            <img id="btn-img-3" src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=100&auto=format&fit=crop&q=60" alt="Músicas">
+                            <img src="musica.jpg" alt="Músicas">
                             <span id="btn-musica-txt">Músicas</span>
                         </button>
-                        <input type="file" accept="image/*" style="font-size:8px; background:#2b0505; color:#ffb3b3;" onchange="loadLocalImage(event, 'btn-img-3')">
                     </div>
                 </div>
 
@@ -734,23 +670,15 @@
                     <li><a href="https://discord.gg/uHqCFqhM" target="_blank" onmouseenter="playHoverSound()" onclick="playClickSound()">3. Discord</a></li>
                     <li><a href="https://www.tiktok.com/@cabraleta?_r=1&_t=ZS-99BrMJDt9k1" target="_blank" onmouseenter="playHoverSound()" onclick="playClickSound()">4. TikTok</a></li>
                 </ul>
-                <!-- Mini imagens preenchidas e com upload próprio -->
                 <div class="mini-imgs">
-                    <div class="mini-img-slot"><img id="slot-img-1" src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=100&auto=format&fit=crop&q=60" alt="Slot 1"></div>
-                    <div class="mini-img-slot"><img id="slot-img-2" src="https://images.unsplash.com/photo-1579783902614-a3fb3927b675?w=100&auto=format&fit=crop&q=60" alt="Slot 2"></div>
-                    <div class="mini-img-slot"><img id="slot-img-3" src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=100&auto=format&fit=crop&q=60" alt="Slot 3"></div>
-                </div>
-                <div class="upload-panel">
-                    <span style="font-size:8px;">Mudar mini-slots:</span>
-                    <input type="file" accept="image/*" style="font-size:8px;" onchange="loadLocalImage(event, 'slot-img-1')">
-                    <input type="file" accept="image/*" style="font-size:8px;" onchange="loadLocalImage(event, 'slot-img-2')">
-                    <input type="file" accept="image/*" style="font-size:8px;" onchange="loadLocalImage(event, 'slot-img-3')">
+                    <div class="mini-img-slot"><img src="jogos.jpg" alt="Slot 1"></div>
+                    <div class="mini-img-slot"><img src="midia.jpg" alt="Slot 2"></div>
+                    <div class="mini-img-slot"><img src="musica.jpg" alt="Slot 3"></div>
                 </div>
             </div>
 
         </div>
 
-        <!-- Rodapé Winamp -->
         <div class="winamp-footer">
             <div class="winamp-controls">
                 <button class="w-btn" onmouseenter="playHoverSound()" onclick="playClickSound()">⏮</button>
@@ -764,14 +692,12 @@
             </div>
         </div>
 
-        <!-- Player do Spotify -->
         <div class="spotify-embed">
             <iframe style="border-radius:0px" src="https://open.spotify.com/embed/track/23yZnQJXXBeQ2ah4pArrfA?utm_source=generator&theme=0" width="100%" height="80" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
         </div>
 
     </div>
 
-    <!-- Sub-Modal Winamp -->
     <div id="sub-modal">
         <div class="winamp-titlebar">
             <span id="modal-title">Sub-Menu.exe</span>
@@ -784,7 +710,6 @@
         </div>
     </div>
 
-    <!-- Necro-Altar.exe -->
     <div id="secret-altar-modal">
         <div class="winamp-titlebar" style="background: linear-gradient(90deg, #ff0000, #400000);">
             <span id="altar-window-title">☣︎ NECRO-ALTAR.EXE (SECRET FEATURE) ☣︎</span>
@@ -801,7 +726,6 @@
     </div>
 
     <script>
-        // Web Audio API para Som Pesado de Escopeta e UI
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
         function playHoverSound() {
@@ -836,7 +760,7 @@
 
         function playHeavyShotgunSound() {
             if (audioCtx.state === 'suspended') audioCtx.resume();
-            const bufferSize = audioCtx.sampleRate * 0.9;
+            const bufferSize = audioCtx.sampleRate * 0.8;
             const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
             const data = buffer.getChannelData(0);
             for (let i = 0; i < bufferSize; i++) {
@@ -844,50 +768,35 @@
             }
             const noise = audioCtx.createBufferSource();
             noise.buffer = buffer;
-
             const filter = audioCtx.createBiquadFilter();
             filter.type = 'lowpass';
-            filter.frequency.setValueAtTime(1400, audioCtx.currentTime);
-            filter.frequency.exponentialRampToValueAtTime(30, audioCtx.currentTime + 0.9);
-
+            filter.frequency.setValueAtTime(1200, audioCtx.currentTime);
+            filter.frequency.exponentialRampToValueAtTime(40, audioCtx.currentTime + 0.8);
             const gain = audioCtx.createGain();
-            gain.gain.setValueAtTime(1.0, audioCtx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.9);
-
+            gain.gain.setValueAtTime(0.9, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.8);
             noise.connect(filter);
             filter.connect(gain);
             gain.connect(audioCtx.destination);
             noise.start();
         }
 
-        // Upload Local Infalível para Imagens
-        function loadLocalImage(event, targetImgId) {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    document.getElementById(targetImgId).src = e.target.result;
-                    if(targetImgId === 'polaroid-img-tag') {
-                        document.getElementById('avatar-img-tag').src = e.target.result;
-                    }
-                }
-                reader.readAsDataURL(file);
-            }
-        }
-
-        // Física de Cacos de Vidro Quicando no Chão
+        // Física Real de Cacos de Vidro Quicando no Chão + Sangue Fluido Orgânico
         function shatterGlassAndOpen(event) {
             playHeavyShotgunSound();
 
             const polaroidEl = document.getElementById('main-polaroid');
             const rect = polaroidEl.getBoundingClientRect();
-            const imgSrc = document.getElementById('polaroid-img-tag').src;
             
+            // Inicia o sangue orgânico escorrendo
+            const blood = document.getElementById('blood-screen');
+            blood.classList.add('dripping');
+
+            // Criar múltiplos cacos de vidro com simulação de física de gravidade e ricochete
             const cols = 5;
             const rows = 5;
             const w = rect.width / cols;
             const h = rect.height / rows;
-            const floorY = window.innerHeight - 50; // Posição do chão
 
             for (let x = 0; x < cols; x++) {
                 for (let y = 0; y < rows; y++) {
@@ -895,47 +804,45 @@
                     shard.className = 'glass-shard';
                     shard.style.width = w + 'px';
                     shard.style.height = h + 'px';
-                    shard.style.backgroundImage = `url('${imgSrc}')`;
+                    
+                    let posX = rect.left + x * w;
+                    let posY = rect.top + y * h;
+                    shard.style.left = posX + 'px';
+                    shard.style.top = posY + 'px';
+                    
+                    shard.style.backgroundImage = `url('avatar.jpg')`;
                     shard.style.backgroundPosition = `-${x * w}px -${y * h}px`;
                     shard.style.backgroundSize = `${rect.width}px ${rect.height}px`;
 
-                    let startX = rect.left + x * w;
-                    let startY = rect.top + y * h;
-                    shard.style.left = startX + 'px';
-                    shard.style.top = startY + 'px';
-
                     document.body.appendChild(shard);
 
-                    // Vetores de velocidade e física de quique
-                    let vx = (Math.random() - 0.5) * 12;
-                    let vy = (Math.random() - 1) * 8 - 4; // Impulso para cima/lados
+                    // Parâmetros de física individuais para cada caco
+                    let vx = (Math.random() - 0.5) * 16;
+                    let vy = (Math.random() - 1.5) * 10;
                     let rot = Math.random() * 360;
-                    let vrot = (Math.random() - 0.5) * 20;
-                    let gravity = 0.8;
-                    let bounces = 0;
+                    let vRot = (Math.random() - 0.5) * 20;
+                    const gravity = 0.8;
+                    const floorY = window.innerHeight - 60;
 
                     const animateShard = () => {
                         vy += gravity;
-                        startX += vx;
-                        startY += vy;
+                        posX += vx;
+                        posY += vy;
+                        rot += vRot;
 
-                        // Se bater no chão, quica!
-                        if (startY >= floorY) {
-                            startY = floorY;
-                            vy = -vy * 0.4; // perda de energia no quique
-                            vx *= 0.8; // atrito com o chão
-                            bounces++;
+                        // Colisão e quique no chão
+                        if (posY >= floorY) {
+                            posY = floorY;
+                            vy = -vy * 0.4; // perda de energia ao quicar
+                            vx *= 0.8;      // atrito com o chão
                         }
 
-                        rot += vrot;
-                        shard.style.transform = `translate(${startX - (rect.left + x * w)}px, ${startY - (rect.top + y * h)}px) rotate(${rot}deg)`;
+                        shard.style.transform = `translate(${posX - (rect.left + x * w)}px, ${posY - (rect.top + y * h)}px) rotate(${rot}deg)`;
 
-                        if (bounces < 3) {
+                        if (posY < floorY + 100) {
                             requestAnimationFrame(animateShard);
                         } else {
-                            shard.style.transition = 'opacity 0.5s ease';
-                            shard.style.opacity = '0';
-                            setTimeout(() => shard.remove(), 500);
+                            shard.remove();
                         }
                     };
                     requestAnimationFrame(animateShard);
@@ -944,10 +851,7 @@
 
             polaroidEl.style.opacity = '0';
 
-            // Inicia o sangue orgânico escorrendo
-            const blood = document.getElementById('blood-screen');
-            blood.classList.add('dripping');
-
+            // Abre o Winamp após o choque inicial do impacto
             setTimeout(() => {
                 document.getElementById('splash-screen').style.display = 'none';
                 document.getElementById('winamp-main').style.display = 'block';
@@ -1037,8 +941,6 @@
                 document.getElementById('altar-window-title').innerText = "☣︎ NECRO-ALTAR.EXE (RECURSO SECRETO) ☣︎";
                 document.getElementById('altar-subtitle').innerText = "O Altar de Carne está faminto...";
                 document.getElementById('altar-desc').innerText = "Clique no altar para colher almas e sangue para o Cabral.";
-                document.getElementById('upload-label-txt').innerText = "🖼️ Enviar Foto Polaroid (Local):";
-                document.getElementById('upload-avatar-txt').innerText = "Trocar Avatar:";
             } else {
                 btns[1].classList.add('active');
                 document.querySelectorAll('.text-pt').forEach(el => el.style.display = 'none');
@@ -1050,8 +952,6 @@
                 document.getElementById('altar-window-title').innerText = "☣︎ NECRO-ALTAR.EXE (SECRET FEATURE) ☣︎";
                 document.getElementById('altar-subtitle').innerText = "The Flesh Altar is hungry...";
                 document.getElementById('altar-desc').innerText = "Click the altar to harvest souls and blood for Cabral.";
-                document.getElementById('upload-label-txt').innerText = "🖼️ Upload Polaroid Photo (Local):";
-                document.getElementById('upload-avatar-txt').innerText = "Change Avatar:";
             }
         }
     </script>
