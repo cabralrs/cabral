@@ -1,0 +1,1059 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cabral - Winamp Portfolio</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: #2b0505;
+            background-image: radial-gradient(circle, #4a0d0d 0%, #1a0202 100%);
+            color: #d1b2b2;
+            font-family: monospace;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Efeito de Sangue Orgânico e Líquido */
+        #blood-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(40, 0, 0, 0.95);
+            z-index: 9999;
+            pointer-events: none;
+            opacity: 0;
+            transform: translateY(-100%);
+            transition: opacity 0.4s ease;
+            overflow: hidden;
+        }
+
+        #blood-screen.dripping {
+            animation: liquidDrop 2s ease forwards;
+        }
+
+        @keyframes liquidDrop {
+            0% { transform: translateY(-100%); opacity: 1; }
+            60% { transform: translateY(0%); opacity: 1; }
+            85% { transform: translateY(0%); opacity: 1; }
+            100% { transform: translateY(0%); opacity: 0; }
+        }
+
+        .blood-stream {
+            position: absolute;
+            top: 0;
+            background: linear-gradient(180deg, #800000 0%, #ff0000 50%, #400000 100%);
+            border-radius: 0 0 20px 20px;
+            box-shadow: 0 0 15px #ff0000;
+            animation: flowDown 1.8s ease-in-out infinite;
+        }
+
+        @keyframes flowDown {
+            0% { height: 0%; }
+            50% { height: 100%; }
+            100% { height: 100%; }
+        }
+
+        /* Tela Inicial / Polaroid com Estilhaçamento Real e Quique */
+        #splash-screen {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            transition: opacity 0.3s ease;
+            position: relative;
+            z-index: 10;
+        }
+
+        .polaroid-container {
+            position: relative;
+            cursor: crosshair;
+        }
+
+        .polaroid {
+            background: #f2ece4;
+            padding: 12px 12px 25px 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.8);
+            border: 1px solid #c7bcae;
+            transform: rotate(-2deg);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            max-width: 240px;
+            text-align: center;
+            position: relative;
+        }
+
+        .polaroid:hover {
+            transform: rotate(0deg) scale(1.02);
+            box-shadow: 0 15px 35px rgba(255,0,0,0.4);
+        }
+
+        .polaroid img {
+            width: 210px;
+            height: 210px;
+            object-fit: cover;
+            border: 1px solid #d1b2b2;
+        }
+
+        .polaroid-caption {
+            margin-top: 12px;
+            font-family: monospace;
+            font-size: 10.5px;
+            color: #421a1a;
+            font-weight: bold;
+        }
+
+        /* Mira Giratória */
+        .crosshair {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 80px;
+            height: 80px;
+            margin-top: -40px;
+            margin-left: -40px;
+            border: 2px dashed #ff0000;
+            border-radius: 50%;
+            pointer-events: none;
+            display: none;
+            animation: rotateCross 4s linear infinite;
+        }
+
+        .crosshair::before, .crosshair::after {
+            content: '';
+            position: absolute;
+            background: #ff0000;
+        }
+        .crosshair::before { top: 38px; left: 0; width: 80px; height: 2px; }
+        .crosshair::after { top: 0; left: 38px; width: 2px; height: 80px; }
+
+        @keyframes rotateCross {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .polaroid-container:hover .crosshair {
+            display: block;
+        }
+
+        /* Cacos de Vidro Quicando */
+        .glass-shard {
+            position: absolute;
+            background-size: 240px 250px;
+            pointer-events: none;
+            z-index: 50;
+            box-shadow: inset 0 0 5px rgba(255,255,255,0.6);
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+
+        /* Painel de Upload Local (Fim dos links quebrados!) */
+        .upload-panel {
+            background: #421a1a;
+            border: 1px solid #6b2d2d;
+            padding: 6px;
+            font-size: 9.5px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            margin-top: 6px;
+        }
+
+        .upload-panel input[type="file"] {
+            font-size: 9px;
+            color: #ffb3b3;
+            background: #2b0505;
+            border: 1px solid #1a0202;
+            padding: 2px;
+        }
+
+        /* Seletor de Idioma */
+        .lang-switch {
+            display: flex;
+            background: #421a1a;
+            border: 1px solid #2b0505;
+            padding: 3px;
+            gap: 4px;
+            border-radius: 4px;
+        }
+
+        .lang-btn {
+            background: #2b0505;
+            color: #d1b2b2;
+            border: 1px solid #6b2d2d;
+            padding: 4px 8px;
+            font-size: 10px;
+            cursor: pointer;
+            font-family: monospace;
+        }
+
+        .lang-btn.active {
+            background: #800000;
+            color: #fff;
+            border-color: #ff9999;
+        }
+
+        /* Janela Principal do Winamp */
+        .winamp-window {
+            display: none;
+            width: 720px;
+            background: #6b2d2d;
+            border: 2px solid;
+            border-color: #9c4a4a #3d1616 #3d1616 #9c4a4a;
+            box-shadow: 10px 10px 30px rgba(0, 0, 0, 0.8);
+            padding: 4px;
+            animation: fadeIn 0.4s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .winamp-titlebar {
+            background: linear-gradient(90deg, #800000, #400000);
+            color: #fff;
+            padding: 4px 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: bold;
+            font-size: 12px;
+            letter-spacing: 1px;
+            border-bottom: 1px solid #3d1616;
+        }
+
+        .winamp-titlebar .controls span {
+            background: #6b2d2d;
+            border: 1px solid;
+            border-color: #9c4a4a #3d1616 #3d1616 #9c4a4a;
+            padding: 0 4px;
+            font-size: 10px;
+            cursor: pointer;
+        }
+
+        .winamp-menu {
+            display: flex;
+            gap: 15px;
+            padding: 4px 8px;
+            font-size: 11px;
+            color: #f0dcdc;
+            background: #592424;
+            border-bottom: 1px solid #3d1616;
+        }
+
+        .winamp-body {
+            display: grid;
+            grid-template-columns: 180px 1fr 180px;
+            gap: 4px;
+            padding: 4px;
+            background: #592424;
+        }
+
+        .panel {
+            background: #421a1a;
+            border: 1px solid;
+            border-color: #2b0505 #803333 #803333 #2b0505;
+            padding: 6px;
+            font-size: 11px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .avatar-box {
+            width: 100%;
+            height: 140px;
+            background: #2b0505;
+            border: 1px solid #1a0202;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .avatar-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .profile-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 10px;
+        }
+
+        .profile-table td {
+            padding: 3px 0;
+            border-bottom: 1px dotted #6b2d2d;
+        }
+
+        .profile-table td:nth-child(2) {
+            text-align: right;
+            color: #ffb3b3;
+        }
+
+        .accordion-header {
+            background: #2b0505;
+            border: 1px solid #1a0202;
+            color: #ff9999;
+            font-weight: bold;
+            font-size: 11px;
+            padding: 5px 8px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            user-select: none;
+        }
+
+        .accordion-header:hover {
+            background: #4a0d0d;
+        }
+
+        .accordion-content {
+            display: none;
+            background: #2b0505;
+            border: 1px solid #1a0202;
+            border-top: none;
+            padding: 6px;
+            font-size: 10px;
+            line-height: 1.4;
+        }
+
+        .accordion-content.active {
+            display: block;
+        }
+
+        .highlight-red {
+            color: #ff4d4d;
+            font-weight: bold;
+        }
+
+        /* Sub-botões com Imagens */
+        .submenu-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            margin-top: 6px;
+        }
+
+        .sub-btn {
+            background: #421a1a;
+            border: 1px solid #6b2d2d;
+            color: #ffb3b3;
+            padding: 5px;
+            text-align: left;
+            cursor: pointer;
+            font-size: 10px;
+            font-family: monospace;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .sub-btn:hover {
+            background: #6b2d2d;
+            color: #fff;
+        }
+
+        .sub-btn img {
+            width: 20px;
+            height: 20px;
+            object-fit: cover;
+            border: 1px solid #2b0505;
+        }
+
+        /* Sub-janela Modal Estilo Winamp */
+        #sub-modal {
+            display: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 450px;
+            background: #6b2d2d;
+            border: 2px solid;
+            border-color: #9c4a4a #3d1616 #3d1616 #9c4a4a;
+            box-shadow: 10px 10px 30px rgba(0, 0, 0, 0.9);
+            z-index: 100;
+            padding: 4px;
+        }
+
+        .sub-modal-body {
+            background: #421a1a;
+            border: 1px solid;
+            border-color: #2b0505 #803333 #803333 #2b0505;
+            padding: 10px;
+            max-height: 250px;
+            overflow-y: auto;
+            font-size: 10.5px;
+            line-height: 1.4;
+        }
+
+        .likes-section {
+            display: flex;
+            gap: 4px;
+        }
+
+        .like-box, .dislike-box {
+            flex: 1;
+            background: #2b0505;
+            border: 1px solid #1a0202;
+            padding: 5px;
+            font-size: 9.5px;
+            line-height: 1.3;
+        }
+
+        .like-box h4 { color: #85ff85; font-size: 9.5px; margin-bottom: 3px; }
+        .dislike-box h4 { color: #ff8585; font-size: 9.5px; margin-bottom: 3px; }
+
+        .stats-row {
+            display: flex;
+            gap: 4px;
+            margin-top: auto;
+        }
+
+        .stat-btn {
+            flex: 1;
+            background: #6b2d2d;
+            border: 1px solid;
+            border-color: #9c4a4a #3d1616 #3d1616 #9c4a4a;
+            color: #fff;
+            padding: 3px;
+            text-align: center;
+            font-size: 10px;
+        }
+
+        .links-list {
+            list-style: none;
+            font-size: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .links-list a {
+            display: block;
+            background: #2b0505;
+            border: 1px solid #1a0202;
+            padding: 4px 6px;
+            color: #ffb3b3;
+            text-decoration: none;
+            transition: 0.2s;
+        }
+
+        .links-list a:hover {
+            background: #4a0d0d;
+            color: #fff;
+            border-color: #803333;
+        }
+
+        /* Mini imagens da direita */
+        .mini-imgs {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2px;
+            margin-top: auto;
+        }
+
+        .mini-img-slot {
+            height: 50px;
+            background: #2b0505;
+            border: 1px solid #1a0202;
+            overflow: hidden;
+        }
+
+        .mini-img-slot img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .winamp-footer {
+            background: #592424;
+            border-top: 1px solid #3d1616;
+            padding: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .winamp-controls {
+            display: flex;
+            gap: 4px;
+        }
+
+        .w-btn {
+            background: #6b2d2d;
+            border: 1px solid;
+            border-color: #9c4a4a #3d1616 #3d1616 #9c4a4a;
+            color: #fff;
+            width: 24px;
+            height: 20px;
+            font-size: 10px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .time-display {
+            background: #000;
+            color: #00ff00;
+            font-family: monospace;
+            padding: 2px 6px;
+            border: 1px solid #3d1616;
+            font-size: 14px;
+            letter-spacing: 2px;
+            cursor: pointer;
+        }
+
+        .time-display:hover {
+            color: #ff0000;
+            text-shadow: 0 0 5px #ff0000;
+        }
+
+        .spotify-embed {
+            margin-top: 4px;
+            background: #421a1a;
+            border: 1px solid;
+            border-color: #2b0505 #803333 #803333 #2b0505;
+        }
+
+        /* Necro-Altar.exe */
+        #secret-altar-modal {
+            display: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 420px;
+            background: #400000;
+            border: 2px solid #ff4d4d;
+            box-shadow: 0 0 40px rgba(255, 0, 0, 0.6);
+            z-index: 200;
+            padding: 4px;
+        }
+
+        .altar-body {
+            background: #1a0202;
+            border: 1px solid #6b2d2d;
+            padding: 15px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .altar-title {
+            color: #ff4d4d;
+            font-size: 12px;
+            font-weight: bold;
+            letter-spacing: 2px;
+        }
+
+        .altar-clicker {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto;
+            background: radial-gradient(circle, #800000 0%, #2b0505 100%);
+            border: 2px dashed #ff9999;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 28px;
+            box-shadow: 0 0 15px rgba(255,0,0,0.4);
+            transition: 0.1s;
+        }
+
+        .altar-clicker:active {
+            transform: scale(0.9);
+            box-shadow: 0 0 25px #ff0000;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Efeito de Sangue Líquido Orgânico -->
+    <div id="blood-screen">
+        <!-- Correntes de sangue orgânicas geradas dinamicamente -->
+        <div class="blood-stream" style="left: 5%; width: 35px; animation-delay: 0.1s;"></div>
+        <div class="blood-stream" style="left: 18%; width: 50px; animation-delay: 0.3s;"></div>
+        <div class="blood-stream" style="left: 32%; width: 25px; animation-delay: 0.0s;"></div>
+        <div class="blood-stream" style="left: 45%; width: 60px; animation-delay: 0.2s;"></div>
+        <div class="blood-stream" style="left: 60%; width: 40px; animation-delay: 0.4s;"></div>
+        <div class="blood-stream" style="left: 75%; width: 55px; animation-delay: 0.1s;"></div>
+        <div class="blood-stream" style="left: 88%; width: 30px; animation-delay: 0.3s;"></div>
+    </div>
+
+    <!-- TELA INICIAL: Polaroid com Estilhaçamento de Vidro e Quique -->
+    <div id="splash-screen">
+        <div class="lang-switch">
+            <button class="lang-btn active" onmouseenter="playHoverSound()" onclick="setLanguage('pt')">PT</button>
+            <button class="lang-btn" onmouseenter="playHoverSound()" onclick="setLanguage('en')">EN</button>
+        </div>
+        
+        <div class="polaroid-container" onclick="shatterGlassAndOpen(event)">
+            <div class="crosshair"></div>
+            <div class="polaroid" id="main-polaroid" onmouseenter="playHoverSound()">
+                <img id="polaroid-img-tag" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=500&auto=format&fit=crop&q=60" alt="Polaroid Avatar">
+                <div class="polaroid-caption" id="polaroid-text">clique em mim para me conhecer melhor.</div>
+            </div>
+        </div>
+
+        <!-- Painel de Upload Infalível para o Avatar Inicial -->
+        <div class="upload-panel">
+            <span id="upload-label-txt">🖼️ Enviar Foto Polaroid (Local):</span>
+            <input type="file" accept="image/*" onchange="loadLocalImage(event, 'polaroid-img-tag')">
+        </div>
+    </div>
+
+    <!-- JANELA DO WINAMP -->
+    <div class="winamp-window" id="winamp-main">
+        <div class="winamp-titlebar">
+            <span>WINAMP - [rottencabral.exe]</span>
+            <div class="controls">
+                <span>_</span><span>□</span><span>×</span>
+            </div>
+        </div>
+        
+        <div class="winamp-menu">
+            <span id="menu-home">Home</span>
+            <span id="menu-profile">Profile</span>
+            <span id="menu-comm">Commissions</span>
+        </div>
+
+        <div class="winamp-body">
+            
+            <!-- Coluna 1 -->
+            <div class="panel">
+                <div class="avatar-box">
+                    <img id="avatar-img-tag" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=500&auto=format&fit=crop&q=60" alt="Avatar">
+                </div>
+                <div class="upload-panel">
+                    <span id="upload-avatar-txt">Trocar Avatar:</span>
+                    <input type="file" accept="image/*" onchange="loadLocalImage(event, 'avatar-img-tag')">
+                </div>
+                <div class="accordion-header" style="cursor:default;" id="profile-title">My Profile</div>
+                <table class="profile-table">
+                    <tr><td><strong id="lbl-name">NAME</strong></td><td>Cabral</td></tr>
+                    <tr><td><strong id="lbl-age">AGE</strong></td><td>17</td></tr>
+                    <tr><td><strong id="lbl-bday">BIRTHDAY</strong></td><td>March 1st</td></tr>
+                </table>
+            </div>
+
+            <!-- Coluna 2: Gavetas Abas -->
+            <div class="panel" style="overflow-y: auto; max-height: 310px;">
+                
+                <!-- Gaveta 1: About Me -->
+                <div class="accordion-header" onmouseenter="playHoverSound()" onclick="playClickSound(); toggleAccordion('about-content')">
+                    <span id="tab-about-title">about me (¬_¬)</span> <span>▼</span>
+                </div>
+                <div class="accordion-content" id="about-content">
+                    <span class="text-pt">sou um <span class="highlight-red">fruto ilusório da sua imaginação</span>. mesmo me alimentando de <span class="highlight-red">carne humana</span>, sou gentil. ☣︎</span>
+                    <span class="text-en" style="display:none;">i'm an <span class="highlight-red">illusory fruit of your imagination</span>. even feeding on <span class="highlight-red">human flesh</span>, i'm kind. ☣︎</span>
+                    
+                    <!-- 3 Novos Botões -->
+                    <div class="submenu-buttons">
+                        <button class="sub-btn" onmouseenter="playHoverSound()" onclick="playClickSound(); openSubModal('jogos')">
+                            <img id="btn-img-1" src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=100&auto=format&fit=crop&q=60" alt="Jogos">
+                            <span id="btn-jogos-txt">Jogos</span>
+                        </button>
+                        <input type="file" accept="image/*" style="font-size:8px; background:#2b0505; color:#ffb3b3;" onchange="loadLocalImage(event, 'btn-img-1')">
+
+                        <button class="sub-btn" onmouseenter="playHoverSound()" onclick="playClickSound(); openSubModal('midia')">
+                            <img id="btn-img-2" src="https://images.unsplash.com/photo-1579783902614-a3fb3927b675?w=100&auto=format&fit=crop&q=60" alt="Mídia Visual">
+                            <span id="btn-midia-txt">Mídia Visual</span>
+                        </button>
+                        <input type="file" accept="image/*" style="font-size:8px; background:#2b0505; color:#ffb3b3;" onchange="loadLocalImage(event, 'btn-img-2')">
+
+                        <button class="sub-btn" onmouseenter="playHoverSound()" onclick="playClickSound(); openSubModal('musica')">
+                            <img id="btn-img-3" src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=100&auto=format&fit=crop&q=60" alt="Músicas">
+                            <span id="btn-musica-txt">Músicas</span>
+                        </button>
+                        <input type="file" accept="image/*" style="font-size:8px; background:#2b0505; color:#ffb3b3;" onchange="loadLocalImage(event, 'btn-img-3')">
+                    </div>
+                </div>
+
+                <!-- Gaveta 2: Why am I here -->
+                <div class="accordion-header" onmouseenter="playHoverSound()" onclick="playClickSound(); toggleAccordion('why-content')">
+                    <span id="tab-why-title">why am i here?</span> <span>▼</span>
+                </div>
+                <div class="accordion-content" id="why-content">
+                    <div class="text-pt">
+                        uso o todomate para me organizar em relação a rotina e estudos, além de registrar meus dias como um diário.<br><br>
+                        <span class="highlight-red">ps:</span> se eu te segui, é porque <span class="highlight-red">curti teu perfil</span> (ou talvez queira provar seu sangue). retribuo stickers sempre a noite. por favor manter atividade ou irei remover! (<span class="highlight-red">moots inativos por mais de um mês serão removidos</span>)
+                    </div>
+                    <div class="text-en" style="display:none;">
+                        i use todomate to organize my routine and studies, as well as logging my days like a diary.<br><br>
+                        <span class="highlight-red">ps:</span> if i followed you, it's because i <span class="highlight-red">liked your profile</span> (or maybe i want to taste your blood). i return stickers every night. please stay active or i'll remove you! (<span class="highlight-red">inactive moots for over a month will be removed</span>)
+                    </div>
+                </div>
+                
+                <div class="likes-section">
+                    <div class="like-box">
+                        <h4 id="lbl-likes">♥ likes</h4>
+                        <div class="text-pt">• visual novels<br>• movimento alternativo e esquerda radical<br>• musicas no geral<br>• jogos de luta</div>
+                        <div class="text-en" style="display:none;">• visual novels<br>• alternative movement & radical left<br>• music in general<br>• fighting games</div>
+                    </div>
+                    <div class="dislike-box">
+                        <h4 id="lbl-dislikes">✖ dislikes</h4>
+                        <div class="text-pt">• direita no geral<br>• qualquer tipo de preconceito<br>• falta de personalidade</div>
+                        <div class="text-en" style="display:none;">• right-wing in general<br>• any kind of prejudice<br>• lack of personality</div>
+                    </div>
+                </div>
+
+                <div class="stats-row">
+                    <div class="stat-btn">♥ Likes (5k)</div>
+                    <div class="stat-btn">💬 Chat (777)</div>
+                </div>
+            </div>
+
+            <!-- Coluna 3 -->
+            <div class="panel">
+                <div class="accordion-header" style="cursor:default;" id="social-title">Social Media</div>
+                <ul class="links-list">
+                    <li><a href="https://www.instagram.com/rottencabral?igsi=MTRnZGV5NzBtbG1kYw==" target="_blank" onmouseenter="playHoverSound()" onclick="playClickSound()">1. Instagram</a></li>
+                    <li><a href="https://x.com/cabralrsrs" target="_blank" onmouseenter="playHoverSound()" onclick="playClickSound()">2. Twitter / X</a></li>
+                    <li><a href="https://discord.gg/uHqCFqhM" target="_blank" onmouseenter="playHoverSound()" onclick="playClickSound()">3. Discord</a></li>
+                    <li><a href="https://www.tiktok.com/@cabraleta?_r=1&_t=ZS-99BrMJDt9k1" target="_blank" onmouseenter="playHoverSound()" onclick="playClickSound()">4. TikTok</a></li>
+                </ul>
+                <!-- Mini imagens preenchidas e com upload próprio -->
+                <div class="mini-imgs">
+                    <div class="mini-img-slot"><img id="slot-img-1" src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=100&auto=format&fit=crop&q=60" alt="Slot 1"></div>
+                    <div class="mini-img-slot"><img id="slot-img-2" src="https://images.unsplash.com/photo-1579783902614-a3fb3927b675?w=100&auto=format&fit=crop&q=60" alt="Slot 2"></div>
+                    <div class="mini-img-slot"><img id="slot-img-3" src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=100&auto=format&fit=crop&q=60" alt="Slot 3"></div>
+                </div>
+                <div class="upload-panel">
+                    <span style="font-size:8px;">Mudar mini-slots:</span>
+                    <input type="file" accept="image/*" style="font-size:8px;" onchange="loadLocalImage(event, 'slot-img-1')">
+                    <input type="file" accept="image/*" style="font-size:8px;" onchange="loadLocalImage(event, 'slot-img-2')">
+                    <input type="file" accept="image/*" style="font-size:8px;" onchange="loadLocalImage(event, 'slot-img-3')">
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Rodapé Winamp -->
+        <div class="winamp-footer">
+            <div class="winamp-controls">
+                <button class="w-btn" onmouseenter="playHoverSound()" onclick="playClickSound()">⏮</button>
+                <button class="w-btn" onmouseenter="playHoverSound()" onclick="playClickSound()">▶</button>
+                <button class="w-btn" onmouseenter="playHoverSound()" onclick="playClickSound()">⏸</button>
+                <button class="w-btn" onmouseenter="playHoverSound()" onclick="playClickSound()">⏹</button>
+            </div>
+            <div class="time-display" onmouseenter="playHoverSound()" onclick="playClickSound(); openSecretAltar()" title="Clique para abrir a Necro-Altar.exe">03:33</div>
+            <div class="winamp-controls">
+                <button class="w-btn" onmouseenter="playHoverSound()" onclick="playClickSound()">📁</button>
+            </div>
+        </div>
+
+        <!-- Player do Spotify -->
+        <div class="spotify-embed">
+            <iframe style="border-radius:0px" src="https://open.spotify.com/embed/track/23yZnQJXXBeQ2ah4pArrfA?utm_source=generator&theme=0" width="100%" height="80" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+        </div>
+
+    </div>
+
+    <!-- Sub-Modal Winamp -->
+    <div id="sub-modal">
+        <div class="winamp-titlebar">
+            <span id="modal-title">Sub-Menu.exe</span>
+            <div class="controls">
+                <span onclick="closeSubModal()">×</span>
+            </div>
+        </div>
+        <div class="sub-modal-body" id="modal-content-text">
+            Conteúdo detalhado aqui...
+        </div>
+    </div>
+
+    <!-- Necro-Altar.exe -->
+    <div id="secret-altar-modal">
+        <div class="winamp-titlebar" style="background: linear-gradient(90deg, #ff0000, #400000);">
+            <span id="altar-window-title">☣︎ NECRO-ALTAR.EXE (SECRET FEATURE) ☣︎</span>
+            <div class="controls">
+                <span onclick="closeSecretAltar()">×</span>
+            </div>
+        </div>
+        <div class="altar-body">
+            <div class="altar-title" id="altar-subtitle">O Altar de Carne está faminto...</div>
+            <div style="font-size: 10px; color: #ffb3b3;" id="altar-desc">Clique no altar para colher almas e sangue para o Cabral.</div>
+            <div class="altar-clicker" onmouseenter="playHoverSound()" onclick="harvestSoul()">🔪</div>
+            <div style="font-size: 11px; color: #00ff00;" id="soul-counter">Almas Coletadas: 0 🩸</div>
+        </div>
+    </div>
+
+    <script>
+        // Web Audio API para Som Pesado de Escopeta e UI
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+        function playHoverSound() {
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(800, audioCtx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(1200, audioCtx.currentTime + 0.02);
+            gain.gain.setValueAtTime(0.015, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.02);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.02);
+        }
+
+        function playClickSound() {
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = 'square';
+            osc.frequency.setValueAtTime(300, audioCtx.currentTime);
+            osc.frequency.setValueAtTime(150, audioCtx.currentTime + 0.03);
+            gain.gain.setValueAtTime(0.04, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.05);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.05);
+        }
+
+        function playHeavyShotgunSound() {
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            const bufferSize = audioCtx.sampleRate * 0.9;
+            const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+            const data = buffer.getChannelData(0);
+            for (let i = 0; i < bufferSize; i++) {
+                data[i] = (Math.random() * 2 - 1);
+            }
+            const noise = audioCtx.createBufferSource();
+            noise.buffer = buffer;
+
+            const filter = audioCtx.createBiquadFilter();
+            filter.type = 'lowpass';
+            filter.frequency.setValueAtTime(1400, audioCtx.currentTime);
+            filter.frequency.exponentialRampToValueAtTime(30, audioCtx.currentTime + 0.9);
+
+            const gain = audioCtx.createGain();
+            gain.gain.setValueAtTime(1.0, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.9);
+
+            noise.connect(filter);
+            filter.connect(gain);
+            gain.connect(audioCtx.destination);
+            noise.start();
+        }
+
+        // Upload Local Infalível para Imagens
+        function loadLocalImage(event, targetImgId) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById(targetImgId).src = e.target.result;
+                    if(targetImgId === 'polaroid-img-tag') {
+                        document.getElementById('avatar-img-tag').src = e.target.result;
+                    }
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // Física de Cacos de Vidro Quicando no Chão
+        function shatterGlassAndOpen(event) {
+            playHeavyShotgunSound();
+
+            const polaroidEl = document.getElementById('main-polaroid');
+            const rect = polaroidEl.getBoundingClientRect();
+            const imgSrc = document.getElementById('polaroid-img-tag').src;
+            
+            const cols = 5;
+            const rows = 5;
+            const w = rect.width / cols;
+            const h = rect.height / rows;
+            const floorY = window.innerHeight - 50; // Posição do chão
+
+            for (let x = 0; x < cols; x++) {
+                for (let y = 0; y < rows; y++) {
+                    const shard = document.createElement('div');
+                    shard.className = 'glass-shard';
+                    shard.style.width = w + 'px';
+                    shard.style.height = h + 'px';
+                    shard.style.backgroundImage = `url('${imgSrc}')`;
+                    shard.style.backgroundPosition = `-${x * w}px -${y * h}px`;
+                    shard.style.backgroundSize = `${rect.width}px ${rect.height}px`;
+
+                    let startX = rect.left + x * w;
+                    let startY = rect.top + y * h;
+                    shard.style.left = startX + 'px';
+                    shard.style.top = startY + 'px';
+
+                    document.body.appendChild(shard);
+
+                    // Vetores de velocidade e física de quique
+                    let vx = (Math.random() - 0.5) * 12;
+                    let vy = (Math.random() - 1) * 8 - 4; // Impulso para cima/lados
+                    let rot = Math.random() * 360;
+                    let vrot = (Math.random() - 0.5) * 20;
+                    let gravity = 0.8;
+                    let bounces = 0;
+
+                    const animateShard = () => {
+                        vy += gravity;
+                        startX += vx;
+                        startY += vy;
+
+                        // Se bater no chão, quica!
+                        if (startY >= floorY) {
+                            startY = floorY;
+                            vy = -vy * 0.4; // perda de energia no quique
+                            vx *= 0.8; // atrito com o chão
+                            bounces++;
+                        }
+
+                        rot += vrot;
+                        shard.style.transform = `translate(${startX - (rect.left + x * w)}px, ${startY - (rect.top + y * h)}px) rotate(${rot}deg)`;
+
+                        if (bounces < 3) {
+                            requestAnimationFrame(animateShard);
+                        } else {
+                            shard.style.transition = 'opacity 0.5s ease';
+                            shard.style.opacity = '0';
+                            setTimeout(() => shard.remove(), 500);
+                        }
+                    };
+                    requestAnimationFrame(animateShard);
+                }
+            }
+
+            polaroidEl.style.opacity = '0';
+
+            // Inicia o sangue orgânico escorrendo
+            const blood = document.getElementById('blood-screen');
+            blood.classList.add('dripping');
+
+            setTimeout(() => {
+                document.getElementById('splash-screen').style.display = 'none';
+                document.getElementById('winamp-main').style.display = 'block';
+            }, 900);
+        }
+
+        function toggleAccordion(id) {
+            const content = document.getElementById(id);
+            content.classList.toggle('active');
+        }
+
+        let currentLang = 'pt';
+
+        function openSubModal(type) {
+            const modal = document.getElementById('sub-modal');
+            const title = document.getElementById('modal-title');
+            const text = document.getElementById('modal-content-text');
+            
+            modal.style.display = 'block';
+            if (type === 'jogos') {
+                title.innerText = currentLang === 'pt' ? "Jogos.exe" : "Games.exe";
+                text.innerHTML = currentLang === 'pt' ? 
+                    "<strong>Lista de Jogos Favoritos / Projetos:</strong><br><br>• Visual Novels sombrias e psicológicas<br>• Jogos de luta clássicos e retro arcades<br>• RPGs de turno com temática dark<br>• (Adicione seus títulos favoritos aqui)" :
+                    "<strong>Favorite Games / Projects List:</strong><br><br>• Dark and psychological visual novels<br>• Classic fighting games and retro arcades<br>• Dark-themed turn-based RPGs<br>• (Add your favorite titles here)";
+            } else if (type === 'midia') {
+                title.innerText = currentLang === 'pt' ? "Midia_Visual.exe" : "Visual_Media.exe";
+                text.innerHTML = currentLang === 'pt' ? 
+                    "<strong>Mídias Visuais e Referências:</strong><br><br>• Animes e mangás underground/gore<br>• Filmes de terror e estética Y2K/Cyberpunk<br>• Fotografia urbana e glitch art<br>• (Escreva sua lista detalhada aqui)" :
+                    "<strong>Visual Media & References:</strong><br><br>• Underground/gore anime and manga<br>• Horror movies and Y2K/Cyberpunk aesthetics<br>• Urban photography and glitch art<br>• (Write your detailed list here)";
+            } else if (type === 'musica') {
+                title.innerText = currentLang === 'pt' ? "Musicas.exe" : "Music.exe";
+                text.innerHTML = currentLang === 'pt' ? 
+                    "<strong>Artistas e Gêneros Musicais:</strong><br><br>• EBM / Industrial / Goth Rock<br>• Música alternativa em geral<br>• Soundtracks nostálgicas e dark ambient<br>• (Insira sua lista completa aqui)" :
+                    "<strong>Artists & Music Genres:</strong><br><br>• EBM / Industrial / Goth Rock<br>• Alternative music in general<br>• Nostalgic soundtracks and dark ambient<br>• (Insert your full list here)";
+            }
+        }
+
+        function closeSubModal() {
+            playClickSound();
+            document.getElementById('sub-modal').style.display = 'none';
+        }
+
+        let soulsCount = 0;
+        function openSecretAltar() {
+            document.getElementById('secret-altar-modal').style.display = 'block';
+        }
+
+        function closeSecretAltar() {
+            playClickSound();
+            document.getElementById('secret-altar-modal').style.display = 'none';
+        }
+
+        function harvestSoul() {
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = 'sawtooth';
+            osc.frequency.setValueAtTime(120, audioCtx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime ? osc.frequency.exponentialRampToValueAtTime(60, audioCtx.currentTime + 0.15) : osc.frequency.linearRampToValueAtTime(60, audioCtx.currentTime + 0.15);
+            gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.15);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.15);
+
+            soulsCount++;
+            document.getElementById('soul-counter').innerText = currentLang === 'pt' ? 
+                `Almas Coletadas: ${soulsCount} 🩸` : 
+                `Souls Harvested: ${soulsCount} 🩸`;
+        }
+
+        function setLanguage(lang) {
+            playClickSound();
+            currentLang = lang;
+            const btns = document.querySelectorAll('.lang-btn');
+            btns.forEach(b => b.classList.remove('active'));
+            
+            if(lang === 'pt') {
+                btns[0].classList.add('active');
+                document.querySelectorAll('.text-pt').forEach(el => el.style.display = 'inline');
+                document.querySelectorAll('.text-en').forEach(el => el.style.display = 'none');
+                document.getElementById('polaroid-text').innerText = "clique em mim para me conhecer melhor.";
+                document.getElementById('btn-jogos-txt').innerText = "Jogos";
+                document.getElementById('btn-midia-txt').innerText = "Mídia Visual";
+                document.getElementById('btn-musica-txt').innerText = "Músicas";
+                document.getElementById('altar-window-title').innerText = "☣︎ NECRO-ALTAR.EXE (RECURSO SECRETO) ☣︎";
+                document.getElementById('altar-subtitle').innerText = "O Altar de Carne está faminto...";
+                document.getElementById('altar-desc').innerText = "Clique no altar para colher almas e sangue para o Cabral.";
+                document.getElementById('upload-label-txt').innerText = "🖼️ Enviar Foto Polaroid (Local):";
+                document.getElementById('upload-avatar-txt').innerText = "Trocar Avatar:";
+            } else {
+                btns[1].classList.add('active');
+                document.querySelectorAll('.text-pt').forEach(el => el.style.display = 'none');
+                document.querySelectorAll('.text-en').forEach(el => el.style.display = 'inline');
+                document.getElementById('polaroid-text').innerText = "click on me to get to know me a lil' better.";
+                document.getElementById('btn-jogos-txt').innerText = "Games";
+                document.getElementById('btn-midia-txt').innerText = "Visual Media";
+                document.getElementById('btn-musica-txt').innerText = "Music";
+                document.getElementById('altar-window-title').innerText = "☣︎ NECRO-ALTAR.EXE (SECRET FEATURE) ☣︎";
+                document.getElementById('altar-subtitle').innerText = "The Flesh Altar is hungry...";
+                document.getElementById('altar-desc').innerText = "Click the altar to harvest souls and blood for Cabral.";
+                document.getElementById('upload-label-txt').innerText = "🖼️ Upload Polaroid Photo (Local):";
+                document.getElementById('upload-avatar-txt').innerText = "Change Avatar:";
+            }
+        }
+    </script>
+</body>
+</html>
