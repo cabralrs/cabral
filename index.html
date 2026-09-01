@@ -21,35 +21,24 @@
             align-items: center;
             min-height: 100vh;
             padding: 20px;
-            overflow: hidden;
+            overflow-x: hidden;
         }
 
-        /* Efeito de Sangue Orgânico e Fluido */
-        #blood-screen {
+        /* Container para as gotas de sangue hiper-realistas */
+        #blood-container {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background: linear-gradient(180deg, #590000 0%, #800000 40%, #300000 100%);
-            z-index: 9999;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
             pointer-events: none;
-            opacity: 0;
-            transform: translateY(-100%);
-            border-bottom-left-radius: 50% 20px;
-            border-bottom-right-radius: 50% 20px;
-            transition: opacity 0.4s ease;
+            z-index: 9999;
         }
 
-        #blood-screen.dripping {
-            animation: organicBlood 1.8s cubic-bezier(0.25, 1, 0.5, 1) forwards;
-        }
-
-        @keyframes organicBlood {
-            0% { transform: translateY(-100%); opacity: 1; border-radius: 0 0 100px 100px; }
-            50% { transform: translateY(0%); opacity: 1; border-radius: 0 0 40px 40px; }
-            85% { transform: translateY(0%); opacity: 1; border-radius: 0 0 10px 10px; }
-            100% { transform: translateY(0%); opacity: 0; }
+        .blood-drop {
+            position: absolute;
+            background: linear-gradient(180deg, #590000 0%, #800000 70%, #300000 100%);
+            border-radius: 0 0 50px 50px;
+            top: 0;
+            box-shadow: 0 5px 15px rgba(128,0,0,0.8);
         }
 
         /* Tela Inicial / Polaroid */
@@ -100,15 +89,11 @@
             font-weight: bold;
         }
 
-        /* Mira Giratória */
         .crosshair {
             position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 80px;
-            height: 80px;
-            margin-top: -40px;
-            margin-left: -40px;
+            top: 50%; left: 50%;
+            width: 80px; height: 80px;
+            margin-top: -40px; margin-left: -40px;
             border: 2px dashed #ff0000;
             border-radius: 50%;
             pointer-events: none;
@@ -129,11 +114,8 @@
             to { transform: rotate(360deg); }
         }
 
-        .polaroid-container:hover .crosshair {
-            display: block;
-        }
+        .polaroid-container:hover .crosshair { display: block; }
 
-        /* Cacos de Vidro Dinâmicos com Física de Quique */
         .glass-shard {
             position: absolute;
             background-image: url('avatar.jpg');
@@ -143,7 +125,6 @@
             box-shadow: inset 0 0 5px rgba(255,255,255,0.6);
         }
 
-        /* Seletor de Idioma */
         .lang-switch {
             display: flex;
             background: #421a1a;
@@ -154,18 +135,14 @@
         }
 
         .lang-btn {
-            background: #2b0505;
-            color: #d1b2b2;
+            background: #2b0505; color: #d1b2b2;
             border: 1px solid #6b2d2d;
-            padding: 4px 8px;
-            font-size: 10px;
-            cursor: pointer;
-            font-family: monospace;
+            padding: 4px 8px; font-size: 10px;
+            cursor: pointer; font-family: monospace;
         }
 
         .lang-btn.active {
-            background: #800000;
-            color: #fff;
+            background: #800000; color: #fff;
             border-color: #ff9999;
         }
 
@@ -179,6 +156,8 @@
             box-shadow: 10px 10px 30px rgba(0, 0, 0, 0.8);
             padding: 4px;
             animation: fadeIn 0.4s ease;
+            position: relative;
+            z-index: 5;
         }
 
         @keyframes fadeIn {
@@ -188,372 +167,163 @@
 
         .winamp-titlebar {
             background: linear-gradient(90deg, #800000, #400000);
-            color: #fff;
-            padding: 4px 8px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-weight: bold;
-            font-size: 12px;
-            letter-spacing: 1px;
+            color: #fff; padding: 4px 8px;
+            display: flex; justify-content: space-between; align-items: center;
+            font-weight: bold; font-size: 12px; letter-spacing: 1px;
             border-bottom: 1px solid #3d1616;
         }
 
         .winamp-titlebar .controls span {
-            background: #6b2d2d;
-            border: 1px solid;
+            background: #6b2d2d; border: 1px solid;
             border-color: #9c4a4a #3d1616 #3d1616 #9c4a4a;
-            padding: 0 4px;
-            font-size: 10px;
-            cursor: pointer;
+            padding: 0 4px; font-size: 10px; cursor: pointer;
         }
 
         .winamp-menu {
-            display: flex;
-            gap: 15px;
-            padding: 4px 8px;
-            font-size: 11px;
-            color: #f0dcdc;
-            background: #592424;
+            display: flex; gap: 15px; padding: 4px 8px;
+            font-size: 11px; color: #f0dcdc; background: #592424;
             border-bottom: 1px solid #3d1616;
         }
 
         .winamp-body {
             display: grid;
             grid-template-columns: 180px 1fr 180px;
-            gap: 4px;
-            padding: 4px;
-            background: #592424;
+            gap: 4px; padding: 4px; background: #592424;
         }
 
         .panel {
-            background: #421a1a;
-            border: 1px solid;
+            background: #421a1a; border: 1px solid;
             border-color: #2b0505 #803333 #803333 #2b0505;
-            padding: 6px;
-            font-size: 11px;
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
+            padding: 6px; font-size: 11px;
+            display: flex; flex-direction: column; gap: 6px;
         }
 
         .avatar-box {
-            width: 100%;
-            height: 140px;
-            background: #2b0505;
-            border: 1px solid #1a0202;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            overflow: hidden;
+            width: 100%; height: 140px; background: #2b0505;
+            border: 1px solid #1a0202; display: flex;
+            justify-content: center; align-items: center; overflow: hidden;
         }
 
-        .avatar-box img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
+        .avatar-box img { width: 100%; height: 100%; object-fit: cover; }
 
-        .profile-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 10px;
-        }
-
-        .profile-table td {
-            padding: 3px 0;
-            border-bottom: 1px dotted #6b2d2d;
-        }
-
-        .profile-table td:nth-child(2) {
-            text-align: right;
-            color: #ffb3b3;
-        }
+        .profile-table { width: 100%; border-collapse: collapse; font-size: 10px; }
+        .profile-table td { padding: 3px 0; border-bottom: 1px dotted #6b2d2d; }
+        .profile-table td:nth-child(2) { text-align: right; color: #ffb3b3; }
 
         .accordion-header {
-            background: #2b0505;
-            border: 1px solid #1a0202;
-            color: #ff9999;
-            font-weight: bold;
-            font-size: 11px;
-            padding: 5px 8px;
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            background: #2b0505; border: 1px solid #1a0202;
+            color: #ff9999; font-weight: bold; font-size: 11px;
+            padding: 5px 8px; cursor: pointer; display: flex;
+            justify-content: space-between; align-items: center;
             user-select: none;
         }
-
-        .accordion-header:hover {
-            background: #4a0d0d;
-        }
+        .accordion-header:hover { background: #4a0d0d; }
 
         .accordion-content {
-            display: none;
-            background: #2b0505;
-            border: 1px solid #1a0202;
-            border-top: none;
-            padding: 6px;
-            font-size: 10px;
-            line-height: 1.4;
+            display: none; background: #2b0505;
+            border: 1px solid #1a0202; border-top: none;
+            padding: 6px; font-size: 10px; line-height: 1.4;
         }
+        .accordion-content.active { display: block; }
 
-        .accordion-content.active {
-            display: block;
-        }
+        .highlight-red { color: #ff4d4d; font-weight: bold; }
 
-        .highlight-red {
-            color: #ff4d4d;
-            font-weight: bold;
-        }
-
-        .submenu-buttons {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-            margin-top: 6px;
-        }
+        .submenu-buttons { display: flex; flex-direction: column; gap: 4px; margin-top: 6px; }
 
         .sub-btn {
-            background: #421a1a;
-            border: 1px solid #6b2d2d;
-            color: #ffb3b3;
-            padding: 5px;
-            text-align: left;
-            cursor: pointer;
-            font-size: 10px;
-            font-family: monospace;
-            display: flex;
-            align-items: center;
-            gap: 6px;
+            background: #421a1a; border: 1px solid #6b2d2d;
+            color: #ffb3b3; padding: 5px; text-align: left;
+            cursor: pointer; font-size: 10px; font-family: monospace;
+            display: flex; align-items: center; gap: 6px;
         }
+        .sub-btn:hover { background: #6b2d2d; color: #fff; }
+        .sub-btn img { width: 20px; height: 20px; object-fit: cover; border: 1px solid #2b0505; }
 
-        .sub-btn:hover {
-            background: #6b2d2d;
-            color: #fff;
-        }
-
-        .sub-btn img {
-            width: 20px;
-            height: 20px;
-            object-fit: cover;
-            border: 1px solid #2b0505;
+        .confidante-text {
+            margin-top: 8px; font-size: 9px;
+            text-align: center; font-style: italic;
+            border-top: 1px dashed #6b2d2d; padding-top: 6px;
         }
 
         #sub-modal {
-            display: none;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 450px;
-            background: #6b2d2d;
-            border: 2px solid;
+            display: none; position: fixed;
+            top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 90%; max-width: 450px;
+            background: #6b2d2d; border: 2px solid;
             border-color: #9c4a4a #3d1616 #3d1616 #9c4a4a;
             box-shadow: 10px 10px 30px rgba(0, 0, 0, 0.9);
-            z-index: 100;
-            padding: 4px;
+            z-index: 100; padding: 4px;
         }
 
         .sub-modal-body {
-            background: #421a1a;
-            border: 1px solid;
+            background: #421a1a; border: 1px solid;
             border-color: #2b0505 #803333 #803333 #2b0505;
-            padding: 10px;
-            max-height: 250px;
-            overflow-y: auto;
-            font-size: 10.5px;
-            line-height: 1.4;
+            padding: 10px; max-height: 300px; overflow-y: auto;
+            font-size: 10.5px; line-height: 1.6;
         }
 
-        .likes-section {
-            display: flex;
-            gap: 4px;
-        }
-
-        .like-box, .dislike-box {
-            flex: 1;
-            background: #2b0505;
-            border: 1px solid #1a0202;
-            padding: 5px;
-            font-size: 9.5px;
-            line-height: 1.3;
-        }
-
+        .likes-section { display: flex; gap: 4px; }
+        .like-box, .dislike-box { flex: 1; background: #2b0505; border: 1px solid #1a0202; padding: 5px; font-size: 9.5px; line-height: 1.3; }
         .like-box h4 { color: #85ff85; font-size: 9.5px; margin-bottom: 3px; }
         .dislike-box h4 { color: #ff8585; font-size: 9.5px; margin-bottom: 3px; }
 
-        .stats-row {
-            display: flex;
-            gap: 4px;
-            margin-top: auto;
-        }
+        .stats-row { display: flex; gap: 4px; margin-top: auto; }
+        .stat-btn { flex: 1; background: #6b2d2d; border: 1px solid; border-color: #9c4a4a #3d1616 #3d1616 #9c4a4a; color: #fff; padding: 3px; text-align: center; font-size: 10px; }
 
-        .stat-btn {
-            flex: 1;
-            background: #6b2d2d;
-            border: 1px solid;
-            border-color: #9c4a4a #3d1616 #3d1616 #9c4a4a;
-            color: #fff;
-            padding: 3px;
-            text-align: center;
-            font-size: 10px;
-        }
+        .links-list { list-style: none; font-size: 10px; display: flex; flex-direction: column; gap: 4px; }
+        .links-list a { display: block; background: #2b0505; border: 1px solid #1a0202; padding: 4px 6px; color: #ffb3b3; text-decoration: none; transition: 0.2s; }
+        .links-list a:hover { background: #4a0d0d; color: #fff; border-color: #803333; }
 
-        .links-list {
-            list-style: none;
-            font-size: 10px;
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-        }
+        .mini-imgs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; margin-top: auto; }
+        .mini-img-slot { height: 50px; background: #2b0505; border: 1px solid #1a0202; overflow: hidden; }
+        .mini-img-slot img { width: 100%; height: 100%; object-fit: cover; }
 
-        .links-list a {
-            display: block;
-            background: #2b0505;
-            border: 1px solid #1a0202;
-            padding: 4px 6px;
-            color: #ffb3b3;
-            text-decoration: none;
-            transition: 0.2s;
-        }
+        .winamp-footer { background: #592424; border-top: 1px solid #3d1616; padding: 6px; display: flex; align-items: center; justify-content: space-between; }
+        .winamp-controls { display: flex; gap: 4px; }
+        .w-btn { background: #6b2d2d; border: 1px solid; border-color: #9c4a4a #3d1616 #3d1616 #9c4a4a; color: #fff; width: 24px; height: 20px; font-size: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+        
+        .time-display { background: #000; color: #00ff00; font-family: monospace; padding: 2px 6px; border: 1px solid #3d1616; font-size: 14px; letter-spacing: 2px; cursor: pointer; }
+        .time-display:hover { color: #ff0000; text-shadow: 0 0 5px #ff0000; }
 
-        .links-list a:hover {
-            background: #4a0d0d;
-            color: #fff;
-            border-color: #803333;
-        }
+        .spotify-embed { margin-top: 4px; background: #421a1a; border: 1px solid; border-color: #2b0505 #803333 #803333 #2b0505; }
 
-        .mini-imgs {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 2px;
-            margin-top: auto;
-        }
+        #secret-altar-modal { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 90%; max-width: 420px; background: #400000; border: 2px solid #ff4d4d; box-shadow: 0 0 40px rgba(255, 0, 0, 0.6); z-index: 200; padding: 4px; }
+        .altar-body { background: #1a0202; border: 1px solid #6b2d2d; padding: 15px; text-align: center; display: flex; flex-direction: column; gap: 10px; }
+        .altar-title { color: #ff4d4d; font-size: 12px; font-weight: bold; letter-spacing: 2px; }
+        .altar-clicker { width: 100px; height: 100px; margin: 0 auto; background: radial-gradient(circle, #800000 0%, #2b0505 100%); border: 2px dashed #ff9999; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 28px; box-shadow: 0 0 15px rgba(255,0,0,0.4); transition: 0.1s; }
+        .altar-clicker:active { transform: scale(0.9); box-shadow: 0 0 25px #ff0000; }
 
-        .mini-img-slot {
-            height: 50px;
-            background: #2b0505;
-            border: 1px solid #1a0202;
-            overflow: hidden;
-        }
-
-        .mini-img-slot img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .winamp-footer {
-            background: #592424;
-            border-top: 1px solid #3d1616;
-            padding: 6px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .winamp-controls {
-            display: flex;
-            gap: 4px;
-        }
-
-        .w-btn {
-            background: #6b2d2d;
-            border: 1px solid;
-            border-color: #9c4a4a #3d1616 #3d1616 #9c4a4a;
-            color: #fff;
-            width: 24px;
-            height: 20px;
-            font-size: 10px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .time-display {
-            background: #000;
-            color: #00ff00;
-            font-family: monospace;
-            padding: 2px 6px;
-            border: 1px solid #3d1616;
-            font-size: 14px;
-            letter-spacing: 2px;
-            cursor: pointer;
-        }
-
-        .time-display:hover {
-            color: #ff0000;
-            text-shadow: 0 0 5px #ff0000;
-        }
-
-        .spotify-embed {
-            margin-top: 4px;
-            background: #421a1a;
-            border: 1px solid;
-            border-color: #2b0505 #803333 #803333 #2b0505;
-        }
-
-        #secret-altar-modal {
-            display: none;
-            position: absolute;
-            top: 50%;
+        /* Rodapé de Desculpas IA */
+        #ai-apology {
+            position: fixed;
+            bottom: 5px;
             left: 50%;
-            transform: translate(-50%, -50%);
-            width: 420px;
-            background: #400000;
-            border: 2px solid #ff4d4d;
-            box-shadow: 0 0 40px rgba(255, 0, 0, 0.6);
-            z-index: 200;
-            padding: 4px;
-        }
-
-        .altar-body {
-            background: #1a0202;
-            border: 1px solid #6b2d2d;
-            padding: 15px;
+            transform: translateX(-50%);
+            font-size: 9px;
+            color: #592424;
+            font-family: monospace;
+            z-index: 1;
             text-align: center;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
+            width: 95%;
         }
 
-        .altar-title {
-            color: #ff4d4d;
-            font-size: 12px;
-            font-weight: bold;
-            letter-spacing: 2px;
-        }
-
-        .altar-clicker {
-            width: 100px;
-            height: 100px;
-            margin: 0 auto;
-            background: radial-gradient(circle, #800000 0%, #2b0505 100%);
-            border: 2px dashed #ff9999;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            font-size: 28px;
-            box-shadow: 0 0 15px rgba(255,0,0,0.4);
-            transition: 0.1s;
-        }
-
-        .altar-clicker:active {
-            transform: scale(0.9);
-            box-shadow: 0 0 25px #ff0000;
+        /* MEDIA QUERIES PARA MOBILE - SITE RESPONSIVO! */
+        @media (max-width: 768px) {
+            .winamp-window { width: 98vw; padding: 2px; }
+            .winamp-body {
+                grid-template-columns: 1fr; /* Coloca tudo em uma coluna */
+                max-height: 75vh;
+                overflow-y: auto;
+            }
+            .panel { max-height: none; }
+            .mini-img-slot { height: 80px; } /* Imagens um pouco maiores no mobile */
         }
     </style>
 </head>
 <body>
 
-    <!-- Efeito de Sangue Fluido Orgânico -->
-    <div id="blood-screen"></div>
+    <div id="blood-container"></div>
 
-    <!-- TELA INICIAL: Polaroid -->
     <div id="splash-screen">
         <div class="lang-switch">
             <button class="lang-btn active" onmouseenter="playHoverSound()" onclick="setLanguage('pt')">PT</button>
@@ -573,9 +343,7 @@
     <div class="winamp-window" id="winamp-main">
         <div class="winamp-titlebar">
             <span>WINAMP - [rottencabral.exe]</span>
-            <div class="controls">
-                <span>_</span><span>□</span><span>×</span>
-            </div>
+            <div class="controls"><span>_</span><span>□</span><span>×</span></div>
         </div>
         
         <div class="winamp-menu">
@@ -586,11 +354,8 @@
 
         <div class="winamp-body">
             
-            <!-- Coluna 1 -->
             <div class="panel">
-                <div class="avatar-box">
-                    <img src="avatar.jpg" alt="Avatar">
-                </div>
+                <div class="avatar-box"><img src="avatar.jpg" alt="Avatar"></div>
                 <div class="accordion-header" style="cursor:default;" id="profile-title">My Profile</div>
                 <table class="profile-table">
                     <tr><td><strong id="lbl-name">NAME</strong></td><td>Cabral</td></tr>
@@ -599,10 +364,7 @@
                 </table>
             </div>
 
-            <!-- Coluna 2: Gavetas Abas -->
-            <div class="panel" style="overflow-y: auto; max-height: 310px;">
-                
-                <!-- Gaveta 1: About Me -->
+            <div class="panel">
                 <div class="accordion-header" onmouseenter="playHoverSound()" onclick="playClickSound(); toggleAccordion('about-content')">
                     <span id="tab-about-title">about me (¬_¬)</span> <span>▼</span>
                 </div>
@@ -610,24 +372,27 @@
                     <span class="text-pt">sou um <span class="highlight-red">fruto ilusório da sua imaginação</span>. mesmo me alimentando de <span class="highlight-red">carne humana</span>, sou gentil. ☣︎</span>
                     <span class="text-en" style="display:none;">i'm an <span class="highlight-red">illusory fruit of your imagination</span>. even feeding on <span class="highlight-red">human flesh</span>, i'm kind. ☣︎</span>
                     
-                    <!-- Botões com caminhos locais fixos -->
                     <div class="submenu-buttons">
                         <button class="sub-btn" onmouseenter="playHoverSound()" onclick="playClickSound(); openSubModal('jogos')">
                             <img src="jogos.jpg" alt="Jogos">
-                            <span id="btn-jogos-txt">Jogos</span>
+                            <span id="btn-jogos-txt">Jogos e Visual Novels</span>
                         </button>
                         <button class="sub-btn" onmouseenter="playHoverSound()" onclick="playClickSound(); openSubModal('midia')">
                             <img src="midia.jpg" alt="Mídia Visual">
-                            <span id="btn-midia-txt">Mídia Visual</span>
+                            <span id="btn-midia-txt">Mídias Visuais</span>
                         </button>
                         <button class="sub-btn" onmouseenter="playHoverSound()" onclick="playClickSound(); openSubModal('musica')">
                             <img src="musica.jpg" alt="Músicas">
                             <span id="btn-musica-txt">Músicas</span>
                         </button>
                     </div>
+
+                    <div class="confidante-text">
+                        <span class="text-pt">...pra saber mais, só virando <span class="highlight-red">meu confidente amigo</span>! ;)</span>
+                        <span class="text-en" style="display:none;">...to know more, you gotta become <span class="highlight-red">my close friend</span>! ;)</span>
+                    </div>
                 </div>
 
-                <!-- Gaveta 2: Why am I here -->
                 <div class="accordion-header" onmouseenter="playHoverSound()" onclick="playClickSound(); toggleAccordion('why-content')">
                     <span id="tab-why-title">why am i here?</span> <span>▼</span>
                 </div>
@@ -661,7 +426,6 @@
                 </div>
             </div>
 
-            <!-- Coluna 3 -->
             <div class="panel">
                 <div class="accordion-header" style="cursor:default;" id="social-title">Social Media</div>
                 <ul class="links-list">
@@ -671,9 +435,9 @@
                     <li><a href="https://www.tiktok.com/@cabraleta?_r=1&_t=ZS-99BrMJDt9k1" target="_blank" onmouseenter="playHoverSound()" onclick="playClickSound()">4. TikTok</a></li>
                 </ul>
                 <div class="mini-imgs">
-                    <div class="mini-img-slot"><img src="jogos.jpg" alt="Slot 1"></div>
-                    <div class="mini-img-slot"><img src="midia.jpg" alt="Slot 2"></div>
-                    <div class="mini-img-slot"><img src="musica.jpg" alt="Slot 3"></div>
+                    <div class="mini-img-slot"><img src="mini1.jpg" alt="Mini 1"></div>
+                    <div class="mini-img-slot"><img src="mini2.jpg" alt="Mini 2"></div>
+                    <div class="mini-img-slot"><img src="mini3.jpg" alt="Mini 3"></div>
                 </div>
             </div>
 
@@ -695,27 +459,26 @@
         <div class="spotify-embed">
             <iframe style="border-radius:0px" src="https://open.spotify.com/embed/track/23yZnQJXXBeQ2ah4pArrfA?utm_source=generator&theme=0" width="100%" height="80" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
         </div>
+    </div>
 
+    <!-- Rodapé Confissão IA -->
+    <div id="ai-apology">
+        <span class="text-pt">eu não programei nada disso, foi o google gemini. eu devo ter matado um programador ao usar IA para isso, sinto muito!!</span>
+        <span class="text-en" style="display:none;">i didn't program any of this, google gemini did. i probably killed a programmer by using AI for this, i'm so sorry!!</span>
     </div>
 
     <div id="sub-modal">
         <div class="winamp-titlebar">
             <span id="modal-title">Sub-Menu.exe</span>
-            <div class="controls">
-                <span onclick="closeSubModal()">×</span>
-            </div>
+            <div class="controls"><span onclick="closeSubModal()">×</span></div>
         </div>
-        <div class="sub-modal-body" id="modal-content-text">
-            Conteúdo detalhado aqui...
-        </div>
+        <div class="sub-modal-body" id="modal-content-text">...</div>
     </div>
 
     <div id="secret-altar-modal">
         <div class="winamp-titlebar" style="background: linear-gradient(90deg, #ff0000, #400000);">
             <span id="altar-window-title">☣︎ NECRO-ALTAR.EXE (SECRET FEATURE) ☣︎</span>
-            <div class="controls">
-                <span onclick="closeSecretAltar()">×</span>
-            </div>
+            <div class="controls"><span onclick="closeSecretAltar()">×</span></div>
         </div>
         <div class="altar-body">
             <div class="altar-title" id="altar-subtitle">O Altar de Carne está faminto...</div>
@@ -732,30 +495,24 @@
             if (audioCtx.state === 'suspended') audioCtx.resume();
             const osc = audioCtx.createOscillator();
             const gain = audioCtx.createGain();
-            osc.type = 'sine';
-            osc.frequency.setValueAtTime(800, audioCtx.currentTime);
+            osc.type = 'sine'; osc.frequency.setValueAtTime(800, audioCtx.currentTime);
             osc.frequency.exponentialRampToValueAtTime(1200, audioCtx.currentTime + 0.02);
             gain.gain.setValueAtTime(0.015, audioCtx.currentTime);
             gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.02);
-            osc.connect(gain);
-            gain.connect(audioCtx.destination);
-            osc.start();
-            osc.stop(audioCtx.currentTime + 0.02);
+            osc.connect(gain); gain.connect(audioCtx.destination);
+            osc.start(); osc.stop(audioCtx.currentTime + 0.02);
         }
 
         function playClickSound() {
             if (audioCtx.state === 'suspended') audioCtx.resume();
             const osc = audioCtx.createOscillator();
             const gain = audioCtx.createGain();
-            osc.type = 'square';
-            osc.frequency.setValueAtTime(300, audioCtx.currentTime);
+            osc.type = 'square'; osc.frequency.setValueAtTime(300, audioCtx.currentTime);
             osc.frequency.setValueAtTime(150, audioCtx.currentTime + 0.03);
             gain.gain.setValueAtTime(0.04, audioCtx.currentTime);
             gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.05);
-            osc.connect(gain);
-            gain.connect(audioCtx.destination);
-            osc.start();
-            osc.stop(audioCtx.currentTime + 0.05);
+            osc.connect(gain); gain.connect(audioCtx.destination);
+            osc.start(); osc.stop(audioCtx.currentTime + 0.05);
         }
 
         function playHeavyShotgunSound() {
@@ -763,86 +520,98 @@
             const bufferSize = audioCtx.sampleRate * 0.8;
             const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
             const data = buffer.getChannelData(0);
-            for (let i = 0; i < bufferSize; i++) {
-                data[i] = (Math.random() * 2 - 1);
-            }
-            const noise = audioCtx.createBufferSource();
-            noise.buffer = buffer;
-            const filter = audioCtx.createBiquadFilter();
-            filter.type = 'lowpass';
+            for (let i = 0; i < bufferSize; i++) data[i] = (Math.random() * 2 - 1);
+            const noise = audioCtx.createBufferSource(); noise.buffer = buffer;
+            const filter = audioCtx.createBiquadFilter(); filter.type = 'lowpass';
             filter.frequency.setValueAtTime(1200, audioCtx.currentTime);
             filter.frequency.exponentialRampToValueAtTime(40, audioCtx.currentTime + 0.8);
-            const gain = audioCtx.createGain();
-            gain.gain.setValueAtTime(0.9, audioCtx.currentTime);
+            const gain = audioCtx.createGain(); gain.gain.setValueAtTime(0.9, audioCtx.currentTime);
             gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.8);
-            noise.connect(filter);
-            filter.connect(gain);
-            gain.connect(audioCtx.destination);
+            noise.connect(filter); filter.connect(gain); gain.connect(audioCtx.destination);
             noise.start();
         }
 
-        // Física Real de Cacos de Vidro Quicando no Chão + Sangue Fluido Orgânico
+        // NOVO: Gerador de Sangue Ultra-Realista
+        function generateOrganicBlood() {
+            const container = document.getElementById('blood-container');
+            const w = window.innerWidth;
+            const dropCount = Math.floor(w / 15); // Quantidade de filetes baseada na tela
+            
+            for(let i = 0; i < dropCount; i++) {
+                let drop = document.createElement('div');
+                drop.className = 'blood-drop';
+                drop.style.left = (i * (100 / dropCount)) + 'vw';
+                drop.style.width = (100 / dropCount + 1.5) + 'vw';
+                
+                let delay = Math.random() * 0.6;
+                let duration = 1.2 + Math.random();
+                
+                drop.style.transition = `height ${duration}s ease-in ${delay}s`;
+                drop.style.height = '0px';
+                container.appendChild(drop);
+                
+                setTimeout(() => {
+                    drop.style.height = '120vh'; // Faz a gota cair além da tela
+                }, 50);
+            }
+
+            // O sangue some suavemente depois que a tela escurece
+            setTimeout(() => {
+                container.style.transition = 'opacity 1s ease';
+                container.style.opacity = '0';
+                setTimeout(() => container.innerHTML = '', 1000); // limpa o DOM
+            }, 2500);
+        }
+
         function shatterGlassAndOpen(event) {
             playHeavyShotgunSound();
+            generateOrganicBlood(); // Chama o sangue real
 
             const polaroidEl = document.getElementById('main-polaroid');
             const rect = polaroidEl.getBoundingClientRect();
             
-            // Inicia o sangue orgânico escorrendo
-            const blood = document.getElementById('blood-screen');
-            blood.classList.add('dripping');
-
-            // Criar múltiplos cacos de vidro com simulação de física de gravidade e ricochete
-            const cols = 5;
-            const rows = 5;
-            const w = rect.width / cols;
-            const h = rect.height / rows;
+            const cols = 5; const rows = 5;
+            const w = rect.width / cols; const h = rect.height / rows;
 
             for (let x = 0; x < cols; x++) {
                 for (let y = 0; y < rows; y++) {
                     const shard = document.createElement('div');
                     shard.className = 'glass-shard';
-                    shard.style.width = w + 'px';
-                    shard.style.height = h + 'px';
+                    shard.style.width = w + 'px'; shard.style.height = h + 'px';
                     
-                    let posX = rect.left + x * w;
-                    let posY = rect.top + y * h;
-                    shard.style.left = posX + 'px';
-                    shard.style.top = posY + 'px';
-                    
+                    let posX = rect.left + x * w; let posY = rect.top + y * h;
+                    shard.style.left = posX + 'px'; shard.style.top = posY + 'px';
                     shard.style.backgroundImage = `url('avatar.jpg')`;
                     shard.style.backgroundPosition = `-${x * w}px -${y * h}px`;
                     shard.style.backgroundSize = `${rect.width}px ${rect.height}px`;
 
                     document.body.appendChild(shard);
 
-                    // Parâmetros de física individuais para cada caco
                     let vx = (Math.random() - 0.5) * 16;
                     let vy = (Math.random() - 1.5) * 10;
                     let rot = Math.random() * 360;
                     let vRot = (Math.random() - 0.5) * 20;
                     const gravity = 0.8;
                     const floorY = window.innerHeight - 60;
+                    
+                    let life = 1.0; // NOVO: Tempo de vida para o caco sumir
 
                     const animateShard = () => {
-                        vy += gravity;
-                        posX += vx;
-                        posY += vy;
-                        rot += vRot;
-
-                        // Colisão e quique no chão
+                        vy += gravity; posX += vx; posY += vy; rot += vRot;
+                        
                         if (posY >= floorY) {
-                            posY = floorY;
-                            vy = -vy * 0.4; // perda de energia ao quicar
-                            vx *= 0.8;      // atrito com o chão
+                            posY = floorY; vy = -vy * 0.4; vx *= 0.8; 
                         }
 
                         shard.style.transform = `translate(${posX - (rect.left + x * w)}px, ${posY - (rect.top + y * h)}px) rotate(${rot}deg)`;
+                        
+                        life -= 0.005; // Vai ficando invisível aos poucos
+                        shard.style.opacity = life;
 
-                        if (posY < floorY + 100) {
+                        if (life > 0) {
                             requestAnimationFrame(animateShard);
                         } else {
-                            shard.remove();
+                            shard.remove(); // Remove para não girar infinitamente
                         }
                     };
                     requestAnimationFrame(animateShard);
@@ -851,7 +620,6 @@
 
             polaroidEl.style.opacity = '0';
 
-            // Abre o Winamp após o choque inicial do impacto
             setTimeout(() => {
                 document.getElementById('splash-screen').style.display = 'none';
                 document.getElementById('winamp-main').style.display = 'block';
@@ -859,8 +627,7 @@
         }
 
         function toggleAccordion(id) {
-            const content = document.getElementById(id);
-            content.classList.toggle('active');
+            document.getElementById(id).classList.toggle('active');
         }
 
         let currentLang = 'pt';
@@ -872,20 +639,20 @@
             
             modal.style.display = 'block';
             if (type === 'jogos') {
-                title.innerText = currentLang === 'pt' ? "Jogos.exe" : "Games.exe";
+                title.innerText = currentLang === 'pt' ? "Jogos_e_VN.exe" : "Games_and_VN.exe";
                 text.innerHTML = currentLang === 'pt' ? 
-                    "<strong>Lista de Jogos Favoritos / Projetos:</strong><br><br>• Visual Novels sombrias e psicológicas<br>• Jogos de luta clássicos e retro arcades<br>• RPGs de turno com temática dark<br>• (Adicione seus títulos favoritos aqui)" :
-                    "<strong>Favorite Games / Projects List:</strong><br><br>• Dark and psychological visual novels<br>• Classic fighting games and retro arcades<br>• Dark-themed turn-based RPGs<br>• (Add your favorite titles here)";
+                    "<strong>Jogos e Visual Novels:</strong><br><br>• Street Fighter 6<br>• Mortal Kombat<br>• Brawlhalla<br>• Minecraft<br>• Roblox<br>• The Last of Us<br>• Until Dawn<br>• Undertale<br>• Deltarune<br>• etc..." :
+                    "<strong>Games and Visual Novels:</strong><br><br>• Street Fighter 6<br>• Mortal Kombat<br>• Brawlhalla<br>• Minecraft<br>• Roblox<br>• The Last of Us<br>• Until Dawn<br>• Undertale<br>• Deltarune<br>• etc...";
             } else if (type === 'midia') {
-                title.innerText = currentLang === 'pt' ? "Midia_Visual.exe" : "Visual_Media.exe";
+                title.innerText = currentLang === 'pt' ? "Midias_Visuais.exe" : "Visual_Media.exe";
                 text.innerHTML = currentLang === 'pt' ? 
-                    "<strong>Mídias Visuais e Referências:</strong><br><br>• Animes e mangás underground/gore<br>• Filmes de terror e estética Y2K/Cyberpunk<br>• Fotografia urbana e glitch art<br>• (Escreva sua lista detalhada aqui)" :
-                    "<strong>Visual Media & References:</strong><br><br>• Underground/gore anime and manga<br>• Horror movies and Y2K/Cyberpunk aesthetics<br>• Urban photography and glitch art<br>• (Write your detailed list here)";
+                    "<strong>Mídias Visuais:</strong><br><br>• Danganronpa V1 & 2 & 3<br>• Saya no Uta<br>• Chainsaw Man<br>• Death Note<br>• Nana<br>• O Verão em que Hikaru Morreu<br>• Your Turn to Die<br>• Evangelion<br>• etc..." :
+                    "<strong>Visual Media:</strong><br><br>• Danganronpa V1 & 2 & 3<br>• Saya no Uta<br>• Chainsaw Man<br>• Death Note<br>• Nana<br>• O Verão em que Hikaru Morreu<br>• Your Turn to Die<br>• Evangelion<br>• etc...";
             } else if (type === 'musica') {
                 title.innerText = currentLang === 'pt' ? "Musicas.exe" : "Music.exe";
                 text.innerHTML = currentLang === 'pt' ? 
-                    "<strong>Artistas e Gêneros Musicais:</strong><br><br>• EBM / Industrial / Goth Rock<br>• Música alternativa em geral<br>• Soundtracks nostálgicas e dark ambient<br>• (Insira sua lista completa aqui)" :
-                    "<strong>Artists & Music Genres:</strong><br><br>• EBM / Industrial / Goth Rock<br>• Alternative music in general<br>• Nostalgic soundtracks and dark ambient<br>• (Insert your full list here)";
+                    "<strong>Músicas:</strong><br><br>• Mitski<br>• TV Girl<br>• Mac DeMarco<br>• The Smiths<br>• The Cranberries<br>• nandatsunami<br>• Pitty<br>• Ebony<br>• Miss Construction<br>• Pierce the Veil<br>• My Chemical Romance<br>• Avril Lavigne<br>• etc..." :
+                    "<strong>Music:</strong><br><br>• Mitski<br>• TV Girl<br>• Mac DeMarco<br>• The Smiths<br>• The Cranberries<br>• nandatsunami<br>• Pitty<br>• Ebony<br>• Miss Construction<br>• Pierce the Veil<br>• My Chemical Romance<br>• Avril Lavigne<br>• etc...";
             }
         }
 
@@ -895,38 +662,23 @@
         }
 
         let soulsCount = 0;
-        function openSecretAltar() {
-            document.getElementById('secret-altar-modal').style.display = 'block';
-        }
-
-        function closeSecretAltar() {
-            playClickSound();
-            document.getElementById('secret-altar-modal').style.display = 'none';
-        }
+        function openSecretAltar() { document.getElementById('secret-altar-modal').style.display = 'block'; }
+        function closeSecretAltar() { playClickSound(); document.getElementById('secret-altar-modal').style.display = 'none'; }
 
         function harvestSoul() {
             if (audioCtx.state === 'suspended') audioCtx.resume();
-            const osc = audioCtx.createOscillator();
-            const gain = audioCtx.createGain();
-            osc.type = 'sawtooth';
-            osc.frequency.setValueAtTime(120, audioCtx.currentTime);
+            const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain();
+            osc.type = 'sawtooth'; osc.frequency.setValueAtTime(120, audioCtx.currentTime);
             osc.frequency.exponentialRampToValueAtTime ? osc.frequency.exponentialRampToValueAtTime(60, audioCtx.currentTime + 0.15) : osc.frequency.linearRampToValueAtTime(60, audioCtx.currentTime + 0.15);
-            gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.15);
-            osc.connect(gain);
-            gain.connect(audioCtx.destination);
-            osc.start();
-            osc.stop(audioCtx.currentTime + 0.15);
+            gain.gain.setValueAtTime(0.1, audioCtx.currentTime); gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.15);
+            osc.connect(gain); gain.connect(audioCtx.destination); osc.start(); osc.stop(audioCtx.currentTime + 0.15);
 
             soulsCount++;
-            document.getElementById('soul-counter').innerText = currentLang === 'pt' ? 
-                `Almas Coletadas: ${soulsCount} 🩸` : 
-                `Souls Harvested: ${soulsCount} 🩸`;
+            document.getElementById('soul-counter').innerText = currentLang === 'pt' ? `Almas Coletadas: ${soulsCount} 🩸` : `Souls Harvested: ${soulsCount} 🩸`;
         }
 
         function setLanguage(lang) {
-            playClickSound();
-            currentLang = lang;
+            playClickSound(); currentLang = lang;
             const btns = document.querySelectorAll('.lang-btn');
             btns.forEach(b => b.classList.remove('active'));
             
@@ -935,8 +687,8 @@
                 document.querySelectorAll('.text-pt').forEach(el => el.style.display = 'inline');
                 document.querySelectorAll('.text-en').forEach(el => el.style.display = 'none');
                 document.getElementById('polaroid-text').innerText = "clique em mim para me conhecer melhor.";
-                document.getElementById('btn-jogos-txt').innerText = "Jogos";
-                document.getElementById('btn-midia-txt').innerText = "Mídia Visual";
+                document.getElementById('btn-jogos-txt').innerText = "Jogos e Visual Novels";
+                document.getElementById('btn-midia-txt').innerText = "Mídias Visuais";
                 document.getElementById('btn-musica-txt').innerText = "Músicas";
                 document.getElementById('altar-window-title').innerText = "☣︎ NECRO-ALTAR.EXE (RECURSO SECRETO) ☣︎";
                 document.getElementById('altar-subtitle').innerText = "O Altar de Carne está faminto...";
@@ -946,7 +698,7 @@
                 document.querySelectorAll('.text-pt').forEach(el => el.style.display = 'none');
                 document.querySelectorAll('.text-en').forEach(el => el.style.display = 'inline');
                 document.getElementById('polaroid-text').innerText = "click on me to get to know me a lil' better.";
-                document.getElementById('btn-jogos-txt').innerText = "Games";
+                document.getElementById('btn-jogos-txt').innerText = "Games and Visual Novels";
                 document.getElementById('btn-midia-txt').innerText = "Visual Media";
                 document.getElementById('btn-musica-txt').innerText = "Music";
                 document.getElementById('altar-window-title').innerText = "☣︎ NECRO-ALTAR.EXE (SECRET FEATURE) ☣︎";
