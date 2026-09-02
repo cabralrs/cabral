@@ -271,8 +271,9 @@
         .stat-btn { flex: 1; background: #6b2d2d; border: 1px solid; border-color: #9c4a4a #3d1616 #3d1616 #9c4a4a; color: #fff; padding: 3px; text-align: center; font-size: 10px; }
 
         .links-list { list-style: none; font-size: 10px; display: flex; flex-direction: column; gap: 4px; }
-        .links-list a { display: block; background: #2b0505; border: 1px solid #1a0202; padding: 4px 6px; color: #ffb3b3; text-decoration: none; transition: 0.2s; }
+        .links-list a { display: flex; align-items: center; gap: 8px; background: #2b0505; border: 1px solid #1a0202; padding: 4px 6px; color: #ffb3b3; text-decoration: none; transition: 0.2s; }
         .links-list a:hover { background: #4a0d0d; color: #fff; border-color: #803333; }
+        .social-icon { width: 14px; height: 14px; object-fit: cover; border-radius: 2px; }
 
         .mini-imgs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; margin-top: auto; }
         .mini-img-slot { height: 50px; background: #2b0505; border: 1px solid #1a0202; overflow: hidden; }
@@ -429,10 +430,12 @@
             <div class="panel">
                 <div class="accordion-header" style="cursor:default;" id="social-title">Social Media</div>
                 <ul class="links-list">
-                    <li><a href="https://www.instagram.com/rottencabral?igsi=MTRnZGV5NzBtbG1kYw==" target="_blank" onmouseenter="playHoverSound()" onclick="playClickSound()">1. Instagram</a></li>
-                    <li><a href="https://x.com/cabralrsrs" target="_blank" onmouseenter="playHoverSound()" onclick="playClickSound()">2. Twitter / X</a></li>
-                    <li><a href="https://discord.gg/uHqCFqhM" target="_blank" onmouseenter="playHoverSound()" onclick="playClickSound()">3. Discord</a></li>
-                    <li><a href="https://www.tiktok.com/@cabraleta?_r=1&_t=ZS-99BrMJDt9k1" target="_blank" onmouseenter="playHoverSound()" onclick="playClickSound()">4. TikTok</a></li>
+                    <li><a href="https://www.instagram.com/rottencabral?igsi=MTRnZGV5NzBtbG1kYw==" target="_blank" onmouseenter="playHoverSound()" onclick="playClickSound()"><img src="insta.jpg" class="social-icon">1. Instagram</a></li>
+                    <li><a href="https://x.com/cabralrsrs" target="_blank" onmouseenter="playHoverSound()" onclick="playClickSound()"><img src="twitter.jpg" class="social-icon">2. Twitter / X</a></li>
+                    <li><a href="https://discord.gg/uHqCFqhM" target="_blank" onmouseenter="playHoverSound()" onclick="playClickSound()"><img src="discord.jpg" class="social-icon">3. Discord</a></li>
+                    <li><a href="https://www.tiktok.com/@cabraleta?_r=1&_t=ZS-99BrMJDt9k1" target="_blank" onmouseenter="playHoverSound()" onclick="playClickSound()"><img src="tiktok.jpg" class="social-icon">4. TikTok</a></li>
+                    <li><a href="https://boxd.it/ir3Eb" target="_blank" onmouseenter="playHoverSound()" onclick="playClickSound()"><img src="letterboxd.jpg" class="social-icon">5. Letterboxd</a></li>
+                    <li><a href="https://skoob.com.br/profile/6959eb9375fac71abf96b018-gu.cabral" target="_blank" onmouseenter="playHoverSound()" onclick="playClickSound()"><img src="skoob.jpg" class="social-icon">6. Skoob</a></li>
                 </ul>
                 <div class="mini-imgs">
                     <div class="mini-img-slot"><img src="mini1.jpg" alt="Mini 1"></div>
@@ -531,11 +534,10 @@
             noise.start();
         }
 
-        // NOVO: Gerador de Sangue Ultra-Realista
         function generateOrganicBlood() {
             const container = document.getElementById('blood-container');
             const w = window.innerWidth;
-            const dropCount = Math.floor(w / 15); // Quantidade de filetes baseada na tela
+            const dropCount = Math.floor(w / 15); 
             
             for(let i = 0; i < dropCount; i++) {
                 let drop = document.createElement('div');
@@ -551,21 +553,20 @@
                 container.appendChild(drop);
                 
                 setTimeout(() => {
-                    drop.style.height = '120vh'; // Faz a gota cair além da tela
+                    drop.style.height = '120vh'; 
                 }, 50);
             }
 
-            // O sangue some suavemente depois que a tela escurece
             setTimeout(() => {
                 container.style.transition = 'opacity 1s ease';
                 container.style.opacity = '0';
-                setTimeout(() => container.innerHTML = '', 1000); // limpa o DOM
+                setTimeout(() => container.innerHTML = '', 1000); 
             }, 2500);
         }
 
         function shatterGlassAndOpen(event) {
             playHeavyShotgunSound();
-            generateOrganicBlood(); // Chama o sangue real
+            generateOrganicBlood();
 
             const polaroidEl = document.getElementById('main-polaroid');
             const rect = polaroidEl.getBoundingClientRect();
@@ -594,7 +595,7 @@
                     const gravity = 0.8;
                     const floorY = window.innerHeight - 60;
                     
-                    let life = 1.0; // NOVO: Tempo de vida para o caco sumir
+                    let life = 1.0;
 
                     const animateShard = () => {
                         vy += gravity; posX += vx; posY += vy; rot += vRot;
@@ -605,13 +606,13 @@
 
                         shard.style.transform = `translate(${posX - (rect.left + x * w)}px, ${posY - (rect.top + y * h)}px) rotate(${rot}deg)`;
                         
-                        life -= 0.005; // Vai ficando invisível aos poucos
+                        life -= 0.005; 
                         shard.style.opacity = life;
 
                         if (life > 0) {
                             requestAnimationFrame(animateShard);
                         } else {
-                            shard.remove(); // Remove para não girar infinitamente
+                            shard.remove(); 
                         }
                     };
                     requestAnimationFrame(animateShard);
@@ -647,7 +648,7 @@
                 title.innerText = currentLang === 'pt' ? "Midias_Visuais.exe" : "Visual_Media.exe";
                 text.innerHTML = currentLang === 'pt' ? 
                     "<strong>Mídias Visuais:</strong><br><br>• Danganronpa V1 & 2 & 3<br>• Saya no Uta<br>• Chainsaw Man<br>• Death Note<br>• Nana<br>• O Verão em que Hikaru Morreu<br>• Your Turn to Die<br>• Evangelion<br>• etc..." :
-                    "<strong>Visual Media:</strong><br><br>• Danganronpa V1 & 2 & 3<br>• Saya no Uta<br>• Chainsaw Man<br>• Death Note<br>• Nana<br>• O Verão em que Hikaru Morreu<br>• Your Turn to Die<br>• Evangelion<br>• etc...";
+                    "<strong>Visual Media:</strong><br><br>• Danganronpa V1 & 2 & 3<br>• Saya no Uta<br>• Chainsaw Man<br>• Death Note<br>• Nana<br>• The Summer Hikaru Died<br>• Your Turn to Die<br>• Evangelion<br>• etc...";
             } else if (type === 'musica') {
                 title.innerText = currentLang === 'pt' ? "Musicas.exe" : "Music.exe";
                 text.innerHTML = currentLang === 'pt' ? 
